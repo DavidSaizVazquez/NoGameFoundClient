@@ -1,41 +1,58 @@
 ﻿using NoGameFoundClient;
 using System;
-using System.Drawing;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Drawing;
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
         ServerConnectionThread serverConnection;
-        
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        
+        async private void Form1_Shown(object sender, EventArgs e)
         {
+            serverStatusLbl.Text = "Status: conecting...";
             serverConnection = new ServerConnectionThread("192.168.53.105", 9005);
-            Thread thread = new Thread(new ThreadStart(serverConnection.ConnectToServer));
-            thread.Start();
-         
 
-        }
+            int connectionSuccess = await Task.Run(() =>
+            {
+                return serverConnection.ConnectToServer();
+            });
+            
 
-        private void ConnectButton_Click(object sender, EventArgs e)
-        {
-                       
+            if (connectionSuccess == 0)
+            {
+                
+                serverConnectionProgressBar.Visible = false;
+                pregressBarLbl.Visible = false;
+                serverStatusLbl.Text = "Status: Connected!";
+                serverStatusLbl.ForeColor = Color.Green;
+                LoginButton.Enabled = true;
+                RegisterButton.Enabled = true;
+            }
+
+            else
+
+            {
+                serverConnectionProgressBar.Visible = false;
+                pregressBarLbl.Visible = false;
+                serverStatusLbl.Text = "Status: Connection Refused";
+                serverStatusLbl.ForeColor = Color.Red;
+            }
 
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            
+
             String usr = userTextBox.Text;
             String pass = passwordTextBox.Text;
 
@@ -47,14 +64,28 @@ namespace WindowsFormsApplication1
         private void DisconnectButton_Click(object sender, EventArgs e)
         {
             serverConnection.DisconnectFromServer();
-
         }
 
-
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void RegisterButton_Click(object sender, EventArgs e)
         {
+            String usr = registerUsrTextBox.Text;
+            String pass = registerPasswordTextBox.Text;
+            String age = registerAgeTextBox.Text;
+            String mail = registerMailTextBox.Text;
+            Boolean spam = spamCheckBox.Checked;
 
+            serverConnection.SendMessage("1/" + usr + "," + pass + "," + age + "," + mail + "," + spam);
+
+            LoginGroupBox.Visible = true;
+            RegistergroupBox.Visible = false;
         }
+
+        private void registerLinkLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LoginGroupBox.Visible = false;
+            RegistergroupBox.Visible = true;
+        }
+
+    
     }
 }

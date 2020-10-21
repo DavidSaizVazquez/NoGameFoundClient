@@ -22,16 +22,18 @@ namespace NoGameFoundClient
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
-        public void ConnectToServer()
+        public int ConnectToServer()
         {
             try
             {
                 server.Connect(port);//Intentamos conectar el socket     
                 Console.WriteLine("Connected");
+                return 0;
             }
             catch (SocketException ex)
             {
                 Console.WriteLine("Server Connection Error");
+                return -1;
                
             }
         }
