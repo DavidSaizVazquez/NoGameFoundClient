@@ -1,18 +1,16 @@
 DROP DATABASE IF EXISTS GameDB;
 CREATE DATABASE GameDB;
 
+USE GameDB;
 
-CREATE TABLE User(
-	Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    Username TEXT UNIQUE NOT NULL,
+CREATE TABLE Users(
+    Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Username TEXT NOT NULL,
     Pwd TEXT NOT NULL,
     Age INT NOT NULL,
     Mail TEXT NOT NULL,
     Spam BOOLEAN NOT NULL
-)
+);
 
-# RETURN AGE
-# RETURN Mail
-# CHANGE Spam
 
-INSERT INTO User(Username,Pwd,Age, Mail,Spam) VALUES ('a','a',0,'aTotallyRealMail@hello.com',true);
+INSERT INTO Users(Username,Pwd,Age, Mail,Spam) VALUES ('a','a',0,'aTotallyRealMail@hello.com',true);
