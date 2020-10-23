@@ -44,6 +44,14 @@ namespace NoGameFoundClient
             server.Send(msg);
         }
 
+        public String ListenForMessage()
+        {
+            byte[] data = new byte[1024];
+            int dataSize = server.Receive(data);
+            return Encoding.ASCII.GetString(data, 0, dataSize);
+
+        }
+
         public void DisconnectFromServer()
         {
             string mensaje = "0/";

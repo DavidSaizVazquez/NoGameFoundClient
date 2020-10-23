@@ -50,7 +50,7 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void LoginButton_Click(object sender, EventArgs e)
+        async private void LoginButton_Click(object sender, EventArgs e)
         {
 
             String usr = userTextBox.Text;
@@ -58,6 +58,10 @@ namespace WindowsFormsApplication1
 
             serverConnection.SendMessage("0/" + usr + "," + pass);
 
+            String serverResponse = await Task.Run(() => serverConnection.ListenForMessage());
+            /**
+             * Execute code to do with the login response
+             */
 
         }
 
