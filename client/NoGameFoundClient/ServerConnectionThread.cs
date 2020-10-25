@@ -56,7 +56,7 @@ namespace NoGameFoundClient
         {
             string mensaje = "0/";
 
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            byte[] msg = Encoding.ASCII.GetBytes(mensaje);
             server.Send(msg);
                  
             server.Shutdown(SocketShutdown.Both);
