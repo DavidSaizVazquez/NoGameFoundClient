@@ -14,3 +14,5 @@ CREATE TABLE Users(
 
 
 INSERT INTO Users(Username,Pwd,Age, Mail,Spam) VALUES ('a','a',0,'aTotallyRealMail@hello.com',true);
+
+SELECT * FROM Users;
