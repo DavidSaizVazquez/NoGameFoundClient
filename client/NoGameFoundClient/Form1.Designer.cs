@@ -53,17 +53,14 @@
             this.pregressBarLbl = new System.Windows.Forms.Label();
             this.serverStatusLbl = new System.Windows.Forms.Label();
             this.profileInformationGroup = new System.Windows.Forms.GroupBox();
+            this.getAgeButton = new System.Windows.Forms.Button();
+            this.getMailButton = new System.Windows.Forms.Button();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.PIMailTextBox = new System.Windows.Forms.TextBox();
-            this.PIAgeTextBox = new System.Windows.Forms.TextBox();
             this.PISpamCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.PIPasswordTextBox = new System.Windows.Forms.TextBox();
-            this.PIModifyButton = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.PIUserTextBox = new System.Windows.Forms.TextBox();
+            this.SpamModifyButton = new System.Windows.Forms.Button();
+            this.getMailLabel = new System.Windows.Forms.Label();
+            this.getAgeLabel = new System.Windows.Forms.Label();
             this.LoginGroupBox.SuspendLayout();
             this.RegistergroupBox.SuspendLayout();
             this.profileInformationGroup.SuspendLayout();
@@ -329,17 +326,14 @@
             // 
             this.profileInformationGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.profileInformationGroup.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.profileInformationGroup.Controls.Add(this.getAgeLabel);
+            this.profileInformationGroup.Controls.Add(this.getMailLabel);
+            this.profileInformationGroup.Controls.Add(this.getAgeButton);
+            this.profileInformationGroup.Controls.Add(this.getMailButton);
             this.profileInformationGroup.Controls.Add(this.richTextBox2);
-            this.profileInformationGroup.Controls.Add(this.PIMailTextBox);
-            this.profileInformationGroup.Controls.Add(this.PIAgeTextBox);
             this.profileInformationGroup.Controls.Add(this.PISpamCheckBox);
             this.profileInformationGroup.Controls.Add(this.label3);
-            this.profileInformationGroup.Controls.Add(this.label4);
-            this.profileInformationGroup.Controls.Add(this.label5);
-            this.profileInformationGroup.Controls.Add(this.PIPasswordTextBox);
-            this.profileInformationGroup.Controls.Add(this.PIModifyButton);
-            this.profileInformationGroup.Controls.Add(this.label6);
-            this.profileInformationGroup.Controls.Add(this.PIUserTextBox);
+            this.profileInformationGroup.Controls.Add(this.SpamModifyButton);
             this.profileInformationGroup.Location = new System.Drawing.Point(369, 12);
             this.profileInformationGroup.Name = "profileInformationGroup";
             this.profileInformationGroup.Size = new System.Drawing.Size(344, 251);
@@ -347,6 +341,26 @@
             this.profileInformationGroup.TabStop = false;
             this.profileInformationGroup.Text = "Profile Information";
             this.profileInformationGroup.Visible = false;
+            // 
+            // getAgeButton
+            // 
+            this.getAgeButton.Location = new System.Drawing.Point(60, 48);
+            this.getAgeButton.Name = "getAgeButton";
+            this.getAgeButton.Size = new System.Drawing.Size(75, 23);
+            this.getAgeButton.TabIndex = 19;
+            this.getAgeButton.Text = "Get Age";
+            this.getAgeButton.UseVisualStyleBackColor = true;
+            this.getAgeButton.Click += new System.EventHandler(this.getAgeButton_Click);
+            // 
+            // getMailButton
+            // 
+            this.getMailButton.Location = new System.Drawing.Point(60, 19);
+            this.getMailButton.Name = "getMailButton";
+            this.getMailButton.Size = new System.Drawing.Size(75, 23);
+            this.getMailButton.TabIndex = 18;
+            this.getMailButton.Text = "Get Mail";
+            this.getMailButton.UseVisualStyleBackColor = true;
+            this.getMailButton.Click += new System.EventHandler(this.getMailButton_Click);
             // 
             // richTextBox2
             // 
@@ -357,24 +371,6 @@
             this.richTextBox2.Size = new System.Drawing.Size(264, 38);
             this.richTextBox2.TabIndex = 17;
             this.richTextBox2.Text = "Do you want to receive notifications of upcomming Game news and updates?";
-            // 
-            // PIMailTextBox
-            // 
-            this.PIMailTextBox.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.PIMailTextBox.Location = new System.Drawing.Point(149, 153);
-            this.PIMailTextBox.Name = "PIMailTextBox";
-            this.PIMailTextBox.PasswordChar = '*';
-            this.PIMailTextBox.Size = new System.Drawing.Size(164, 20);
-            this.PIMailTextBox.TabIndex = 16;
-            // 
-            // PIAgeTextBox
-            // 
-            this.PIAgeTextBox.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.PIAgeTextBox.Location = new System.Drawing.Point(149, 112);
-            this.PIAgeTextBox.Name = "PIAgeTextBox";
-            this.PIAgeTextBox.PasswordChar = '*';
-            this.PIAgeTextBox.Size = new System.Drawing.Size(164, 20);
-            this.PIAgeTextBox.TabIndex = 15;
             // 
             // PISpamCheckBox
             // 
@@ -391,66 +387,36 @@
             this.label3.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(59, 149);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 23);
+            this.label3.Size = new System.Drawing.Size(112, 23);
             this.label3.TabIndex = 13;
-            this.label3.Text = "Mail";
+            this.label3.Text = "Modify Spam";
             // 
-            // label4
+            // SpamModifyButton
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(57, 108);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(39, 23);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "Age";
+            this.SpamModifyButton.Enabled = false;
+            this.SpamModifyButton.Location = new System.Drawing.Point(134, 222);
+            this.SpamModifyButton.Name = "SpamModifyButton";
+            this.SpamModifyButton.Size = new System.Drawing.Size(97, 23);
+            this.SpamModifyButton.TabIndex = 5;
+            this.SpamModifyButton.Text = "Modify Spam";
+            this.SpamModifyButton.UseVisualStyleBackColor = true;
+            this.SpamModifyButton.Click += new System.EventHandler(this.SpamModifyButton_Click);
             // 
-            // label5
+            // getMailLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(57, 62);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(86, 23);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Password";
+            this.getMailLabel.AutoSize = true;
+            this.getMailLabel.Location = new System.Drawing.Point(141, 27);
+            this.getMailLabel.Name = "getMailLabel";
+            this.getMailLabel.Size = new System.Drawing.Size(0, 13);
+            this.getMailLabel.TabIndex = 20;
             // 
-            // PIPasswordTextBox
+            // getAgeLabel
             // 
-            this.PIPasswordTextBox.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.PIPasswordTextBox.Location = new System.Drawing.Point(149, 66);
-            this.PIPasswordTextBox.Name = "PIPasswordTextBox";
-            this.PIPasswordTextBox.PasswordChar = '*';
-            this.PIPasswordTextBox.Size = new System.Drawing.Size(164, 20);
-            this.PIPasswordTextBox.TabIndex = 11;
-            // 
-            // PIModifyButton
-            // 
-            this.PIModifyButton.Enabled = false;
-            this.PIModifyButton.Location = new System.Drawing.Point(134, 222);
-            this.PIModifyButton.Name = "PIModifyButton";
-            this.PIModifyButton.Size = new System.Drawing.Size(97, 23);
-            this.PIModifyButton.TabIndex = 5;
-            this.PIModifyButton.Text = "Modify Profile";
-            this.PIModifyButton.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(59, 27);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(46, 23);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "User";
-            // 
-            // PIUserTextBox
-            // 
-            this.PIUserTextBox.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.PIUserTextBox.Location = new System.Drawing.Point(149, 31);
-            this.PIUserTextBox.Name = "PIUserTextBox";
-            this.PIUserTextBox.Size = new System.Drawing.Size(164, 20);
-            this.PIUserTextBox.TabIndex = 3;
+            this.getAgeLabel.AutoSize = true;
+            this.getAgeLabel.Location = new System.Drawing.Point(141, 53);
+            this.getAgeLabel.Name = "getAgeLabel";
+            this.getAgeLabel.Size = new System.Drawing.Size(0, 13);
+            this.getAgeLabel.TabIndex = 21;
             // 
             // Form1
             // 
@@ -506,16 +472,13 @@
         private System.Windows.Forms.Label serverStatusLbl;
         private System.Windows.Forms.GroupBox profileInformationGroup;
         private System.Windows.Forms.RichTextBox richTextBox2;
-        private System.Windows.Forms.TextBox PIMailTextBox;
-        private System.Windows.Forms.TextBox PIAgeTextBox;
         private System.Windows.Forms.CheckBox PISpamCheckBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox PIPasswordTextBox;
-        private System.Windows.Forms.Button PIModifyButton;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox PIUserTextBox;
+        private System.Windows.Forms.Button SpamModifyButton;
+        private System.Windows.Forms.Button getAgeButton;
+        private System.Windows.Forms.Button getMailButton;
+        private System.Windows.Forms.Label getAgeLabel;
+        private System.Windows.Forms.Label getMailLabel;
     }
 }
 
