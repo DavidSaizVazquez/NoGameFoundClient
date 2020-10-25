@@ -22,7 +22,7 @@ namespace WindowsFormsApplication1
         async private void Form1_Shown(object sender, EventArgs e)
         {
             serverStatusLbl.Text = "Status: conecting...";
-            serverConnection = new ServerConnectionThread("10.0.2.15", 13550);
+            serverConnection = new ServerConnectionThread("192.168.1.174", 13550);
 
             int connectionSuccess = await Task.Run(() =>
             {
@@ -65,7 +65,7 @@ namespace WindowsFormsApplication1
              * Execute code to do with the login response
              */
 
-            if(serverResponse == "1/0")
+            if(serverResponse.Equals("1/0"))
             {
                 this.user = userTextBox.Text;
                 serverConnection.SendMessage("6/" + this.user);
@@ -74,10 +74,17 @@ namespace WindowsFormsApplication1
                 profileInformationGroup.Visible = true;
                 SpamModifyButton.Enabled = true;
                 LoginGroupBox.Visible = false;
+                loginStatusLbl.ForeColor = Color.Green;
+                loginStatusLbl.Text = "Logged In!";
+
+
 
             }
             else
             {
+                loginStatusLbl.ForeColor = Color.Red;
+                loginStatusLbl.Text = "User not found, please register";
+
                 Console.WriteLine("Login Error");
                 /**
                  * Notify error in ui
@@ -97,12 +104,20 @@ namespace WindowsFormsApplication1
             String pass = registerPasswordTextBox.Text;
             String age = registerAgeTextBox.Text;
             String mail = registerMailTextBox.Text;
-            Boolean spam = spamCheckBox.Checked;
+            if (String.IsNullOrEmpty(usr) || String.IsNullOrEmpty(pass) || String.IsNullOrEmpty(age) || String.IsNullOrEmpty(mail))
+            {
+                // Do something...
+            }
+            else
+            {
 
-            serverConnection.SendMessage("2/" + usr + "," + pass + "," + age + "," + mail + "," + spam);
+                Boolean spam = spamCheckBox.Checked;
 
-            LoginGroupBox.Visible = true;
-            RegistergroupBox.Visible = false;
+                serverConnection.SendMessage("2/" + usr + "," + pass + "," + age + "," + mail + "," + spam);
+
+                LoginGroupBox.Visible = true;
+                RegistergroupBox.Visible = false;
+            }
         }
 
         private void registerLinkLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -146,6 +161,11 @@ namespace WindowsFormsApplication1
                  * Notify error in ui
                  */
             }
+        }
+
+        private void registerAgeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
     }
 }
