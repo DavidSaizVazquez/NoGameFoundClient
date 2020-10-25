@@ -1,125 +1,151 @@
-﻿using System;
-using System.Drawing;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
+﻿using NoGameFoundClient;
+using System;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Drawing;
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        Socket server;
+        ServerConnectionThread serverConnection;
+
+        String user;
+       
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        
+        async private void Form1_Shown(object sender, EventArgs e)
         {
+            serverStatusLbl.Text = "Status: conecting...";
+            serverConnection = new ServerConnectionThread("10.0.2.15", 13550);
 
-           
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
-            //al que deseamos conectarnos
-            IPAddress direc = IPAddress.Parse("192.168.56.102");
-            IPEndPoint ipep = new IPEndPoint(direc, 9200);
+            int connectionSuccess = await Task.Run(() =>
+            {
+                return serverConnection.ConnectToServer();
+            });
             
 
-            //Creamos el socket 
-            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            try
+            if (connectionSuccess == 0)
             {
-                server.Connect(ipep);//Intentamos conectar el socket
-                this.BackColor = Color.Green;
-                MessageBox.Show("Conectado");
-
+                
+                serverConnectionProgressBar.Visible = false;
+                pregressBarLbl.Visible = false;
+                serverStatusLbl.Text = "Status: Connected!";
+                serverStatusLbl.ForeColor = Color.Green;
+                LoginButton.Enabled = true;
+                RegisterButton.Enabled = true;
             }
-            catch (SocketException ex)
+
+            else
+
             {
-                //Si hay excepcion imprimimos error y salimos del programa con return 
-                MessageBox.Show("No he podido conectar con el servidor");
-                return;
+                serverConnectionProgressBar.Visible = false;
+                pregressBarLbl.Visible = false;
+                serverStatusLbl.Text = "Status: Connection Timed out";
+                serverStatusLbl.ForeColor = Color.Red;
             }
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        async private void LoginButton_Click(object sender, EventArgs e)
         {
-            if (Longitud.Checked)
+
+            String usr = userTextBox.Text;
+            String pass = passwordTextBox.Text;
+
+            serverConnection.SendMessage("1/" + usr + "," + pass);
+
+            String serverResponse = await Task.Run(() => serverConnection.ListenForMessage());
+            /**
+             * Execute code to do with the login response
+             */
+
+            if(serverResponse == "1/0")
             {
-                string mensaje = "1/" + nombre.Text;
-                // Enviamos al servidor el nombre tecleado
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split ('\0')[0];
-                MessageBox.Show("La longitud de tu nombre es: " + mensaje);
-            }
-            else if (Bonito.Checked)
-            {
-                string mensaje = "2/" + nombre.Text;
-                // Enviamos al servidor el nombre tecleado
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-
-                if (mensaje == "SI")
-                    MessageBox.Show("Tu nombre ES bonito.");
-                else
-                    MessageBox.Show("Tu nombre NO bonito. Lo siento.");
+                this.user = userTextBox.Text;
+                serverConnection.SendMessage("6/" + this.user);
+                String spamResponse = await Task.Run(() => serverConnection.ListenForMessage());
+                PISpamCheckBox.Checked = spamResponse.Replace("/6", "") == "1";
+                profileInformationGroup.Visible = true;
+                SpamModifyButton.Enabled = true;
+                LoginGroupBox.Visible = false;
 
             }
             else
             {
-                // Enviamos nombre y altura
-                string mensaje = "3/" + nombre.Text + "/" + alturaBox.Text;
-                // Enviamos al servidor el nombre tecleado
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                MessageBox.Show(mensaje);
+                Console.WriteLine("Login Error");
+                /**
+                 * Notify error in ui
+                 */
             }
-             
-        
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            //Mensaje de desconexión
-            string mensaje = "0/";
-        
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-            server.Send(msg);
-
-            // Nos desconectamos
-            this.BackColor = Color.Gray;
-            server.Shutdown(SocketShutdown.Both);
-            server.Close();
-
 
         }
 
-
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void DisconnectButton_Click(object sender, EventArgs e)
         {
+            serverConnection.DisconnectFromServer();
+        }
 
+        private void RegisterButton_Click(object sender, EventArgs e)
+        {
+            String usr = registerUsrTextBox.Text;
+            String pass = registerPasswordTextBox.Text;
+            String age = registerAgeTextBox.Text;
+            String mail = registerMailTextBox.Text;
+            Boolean spam = spamCheckBox.Checked;
+
+            serverConnection.SendMessage("2/" + usr + "," + pass + "," + age + "," + mail + "," + spam);
+
+            LoginGroupBox.Visible = true;
+            RegistergroupBox.Visible = false;
+        }
+
+        private void registerLinkLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LoginGroupBox.Visible = false;
+            RegistergroupBox.Visible = true;
+        }
+
+        async private void getMailButton_Click(object sender, EventArgs e)
+        {
+            serverConnection.SendMessage("4/" + this.user);
+            String serverResponse = await Task.Run(() => serverConnection.ListenForMessage());
+
+            getMailLabel.Text = serverResponse.Replace("4/", "");
+
+        }
+
+        async private void getAgeButton_Click(object sender, EventArgs e)
+        {
+            serverConnection.SendMessage("3/" + this.user);
+            String serverResponse = await Task.Run(() => serverConnection.ListenForMessage());
+
+            getAgeLabel.Text = serverResponse.Replace("3/", "");
+        }
+
+        async private void SpamModifyButton_Click(object sender, EventArgs e)
+        {
+            serverConnection.SendMessage("5/" + this.user + "," + (PISpamCheckBox.Checked ? 1:0));
+
+            String serverResponse = await Task.Run(() => serverConnection.ListenForMessage());
+            
+
+            if (serverResponse == "5/0")
+            {
+                Console.WriteLine("Change spam successful!");
+            }
+            else
+            {
+                Console.WriteLine("Change spam error");
+                /**
+                 * Notify error in ui
+                 */
+            }
         }
     }
 }
