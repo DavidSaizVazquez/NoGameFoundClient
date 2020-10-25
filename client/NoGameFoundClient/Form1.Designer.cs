@@ -74,7 +74,7 @@
             this.UserLbl.Font = new System.Drawing.Font("Calibri", 14.25F);
             this.UserLbl.Location = new System.Drawing.Point(53, 27);
             this.UserLbl.Name = "UserLbl";
-            this.UserLbl.Size = new System.Drawing.Size(82, 41);
+            this.UserLbl.Size = new System.Drawing.Size(46, 23);
             this.UserLbl.TabIndex = 1;
             this.UserLbl.Text = "User";
             // 
@@ -119,7 +119,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(69, 141);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(135, 15);
+            this.label2.Size = new System.Drawing.Size(122, 13);
             this.label2.TabIndex = 20;
             this.label2.Text = "Don\'t have an account?";
             // 
@@ -128,7 +128,7 @@
             this.registerLinkLbl.AutoSize = true;
             this.registerLinkLbl.Location = new System.Drawing.Point(188, 141);
             this.registerLinkLbl.Name = "registerLinkLbl";
-            this.registerLinkLbl.Size = new System.Drawing.Size(56, 15);
+            this.registerLinkLbl.Size = new System.Drawing.Size(49, 13);
             this.registerLinkLbl.TabIndex = 1;
             this.registerLinkLbl.TabStop = true;
             this.registerLinkLbl.Text = "Register!";
@@ -140,7 +140,7 @@
             this.label1.Font = new System.Drawing.Font("Calibri", 14.25F);
             this.label1.Location = new System.Drawing.Point(51, 62);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(149, 41);
+            this.label1.Size = new System.Drawing.Size(86, 23);
             this.label1.TabIndex = 10;
             this.label1.Text = "Password";
             // 
@@ -221,7 +221,7 @@
             this.spamCheckBox.AutoSize = true;
             this.spamCheckBox.Location = new System.Drawing.Point(60, 184);
             this.spamCheckBox.Name = "spamCheckBox";
-            this.spamCheckBox.Size = new System.Drawing.Size(22, 21);
+            this.spamCheckBox.Size = new System.Drawing.Size(15, 14);
             this.spamCheckBox.TabIndex = 4;
             this.spamCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -231,7 +231,7 @@
             this.mailLbl.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mailLbl.Location = new System.Drawing.Point(59, 149);
             this.mailLbl.Name = "mailLbl";
-            this.mailLbl.Size = new System.Drawing.Size(79, 41);
+            this.mailLbl.Size = new System.Drawing.Size(43, 23);
             this.mailLbl.TabIndex = 13;
             this.mailLbl.Text = "Mail";
             // 
@@ -241,7 +241,7 @@
             this.ageLabel.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ageLabel.Location = new System.Drawing.Point(57, 108);
             this.ageLabel.Name = "ageLabel";
-            this.ageLabel.Size = new System.Drawing.Size(71, 41);
+            this.ageLabel.Size = new System.Drawing.Size(39, 23);
             this.ageLabel.TabIndex = 12;
             this.ageLabel.Text = "Age";
             // 
@@ -251,7 +251,7 @@
             this.registerPasswordLbl.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.registerPasswordLbl.Location = new System.Drawing.Point(57, 62);
             this.registerPasswordLbl.Name = "registerPasswordLbl";
-            this.registerPasswordLbl.Size = new System.Drawing.Size(149, 41);
+            this.registerPasswordLbl.Size = new System.Drawing.Size(86, 23);
             this.registerPasswordLbl.TabIndex = 10;
             this.registerPasswordLbl.Text = "Password";
             // 
@@ -281,7 +281,7 @@
             this.usrLbl.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usrLbl.Location = new System.Drawing.Point(59, 27);
             this.usrLbl.Name = "usrLbl";
-            this.usrLbl.Size = new System.Drawing.Size(82, 41);
+            this.usrLbl.Size = new System.Drawing.Size(46, 23);
             this.usrLbl.TabIndex = 1;
             this.usrLbl.Text = "User";
             // 
@@ -296,7 +296,7 @@
             // serverConnectionProgressBar
             // 
             this.serverConnectionProgressBar.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.serverConnectionProgressBar.Location = new System.Drawing.Point(227, 336);
+            this.serverConnectionProgressBar.Location = new System.Drawing.Point(227, 332);
             this.serverConnectionProgressBar.MarqueeAnimationSpeed = 10;
             this.serverConnectionProgressBar.Name = "serverConnectionProgressBar";
             this.serverConnectionProgressBar.Size = new System.Drawing.Size(280, 10);
@@ -309,9 +309,9 @@
             this.pregressBarLbl.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.pregressBarLbl.AutoSize = true;
             this.pregressBarLbl.BackColor = System.Drawing.SystemColors.Control;
-            this.pregressBarLbl.Location = new System.Drawing.Point(226, 321);
+            this.pregressBarLbl.Location = new System.Drawing.Point(226, 317);
             this.pregressBarLbl.Name = "pregressBarLbl";
-            this.pregressBarLbl.Size = new System.Drawing.Size(127, 15);
+            this.pregressBarLbl.Size = new System.Drawing.Size(114, 13);
             this.pregressBarLbl.TabIndex = 13;
             this.pregressBarLbl.Text = "Connecting to server...";
             // 
@@ -319,9 +319,9 @@
             // 
             this.serverStatusLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.serverStatusLbl.AutoSize = true;
-            this.serverStatusLbl.Location = new System.Drawing.Point(0, 336);
+            this.serverStatusLbl.Location = new System.Drawing.Point(0, 331);
             this.serverStatusLbl.Name = "serverStatusLbl";
-            this.serverStatusLbl.Size = new System.Drawing.Size(44, 15);
+            this.serverStatusLbl.Size = new System.Drawing.Size(40, 13);
             this.serverStatusLbl.TabIndex = 14;
             this.serverStatusLbl.Text = "Status:";
             // 
@@ -350,7 +350,7 @@
             this.getAgeLabel.AutoSize = true;
             this.getAgeLabel.Location = new System.Drawing.Point(141, 53);
             this.getAgeLabel.Name = "getAgeLabel";
-            this.getAgeLabel.Size = new System.Drawing.Size(0, 15);
+            this.getAgeLabel.Size = new System.Drawing.Size(0, 13);
             this.getAgeLabel.TabIndex = 21;
             // 
             // getMailLabel
@@ -358,7 +358,7 @@
             this.getMailLabel.AutoSize = true;
             this.getMailLabel.Location = new System.Drawing.Point(141, 27);
             this.getMailLabel.Name = "getMailLabel";
-            this.getMailLabel.Size = new System.Drawing.Size(0, 15);
+            this.getMailLabel.Size = new System.Drawing.Size(0, 13);
             this.getMailLabel.TabIndex = 20;
             // 
             // getAgeButton
@@ -397,7 +397,7 @@
             this.PISpamCheckBox.AutoSize = true;
             this.PISpamCheckBox.Location = new System.Drawing.Point(60, 184);
             this.PISpamCheckBox.Name = "PISpamCheckBox";
-            this.PISpamCheckBox.Size = new System.Drawing.Size(22, 21);
+            this.PISpamCheckBox.Size = new System.Drawing.Size(15, 14);
             this.PISpamCheckBox.TabIndex = 2;
             this.PISpamCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -407,7 +407,7 @@
             this.label3.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(59, 149);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(201, 41);
+            this.label3.Size = new System.Drawing.Size(112, 23);
             this.label3.TabIndex = 13;
             this.label3.Text = "Modify Spam";
             // 
@@ -428,17 +428,18 @@
             this.errorDialogLabel.AutoSize = true;
             this.errorDialogLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.errorDialogLabel.ForeColor = System.Drawing.Color.Red;
-            this.errorDialogLabel.Location = new System.Drawing.Point(0, 316);
+            this.errorDialogLabel.Location = new System.Drawing.Point(3, 314);
             this.errorDialogLabel.Name = "errorDialogLabel";
-            this.errorDialogLabel.Size = new System.Drawing.Size(0, 25);
+            this.errorDialogLabel.Size = new System.Drawing.Size(0, 13);
             this.errorDialogLabel.TabIndex = 16;
             // 
             // loginStatusLbl
             // 
+            this.loginStatusLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.loginStatusLbl.AutoSize = true;
             this.loginStatusLbl.Location = new System.Drawing.Point(3, 293);
             this.loginStatusLbl.Name = "loginStatusLbl";
-            this.loginStatusLbl.Size = new System.Drawing.Size(0, 15);
+            this.loginStatusLbl.Size = new System.Drawing.Size(0, 13);
             this.loginStatusLbl.TabIndex = 17;
             // 
             // Form1
