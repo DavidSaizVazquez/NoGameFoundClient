@@ -71,6 +71,9 @@ namespace WindowsFormsApplication1
                 serverConnection.SendMessage("6/" + this.user);
                 String spamResponse = await Task.Run(() => serverConnection.ListenForMessage());
                 PISpamCheckBox.Checked = spamResponse.Replace("/6", "") == "1";
+                profileInformationGroup.Visible = true;
+                SpamModifyButton.Enabled = true;
+                LoginGroupBox.Visible = false;
 
             }
             else
@@ -122,7 +125,7 @@ namespace WindowsFormsApplication1
             serverConnection.SendMessage("3/" + this.user);
             String serverResponse = await Task.Run(() => serverConnection.ListenForMessage());
 
-            getMailLabel.Text = serverResponse.Replace("3/", "");
+            getAgeLabel.Text = serverResponse.Replace("3/", "");
         }
 
         async private void SpamModifyButton_Click(object sender, EventArgs e)
@@ -130,9 +133,7 @@ namespace WindowsFormsApplication1
             serverConnection.SendMessage("5/" + this.user + "," + (PISpamCheckBox.Checked ? 1:0));
 
             String serverResponse = await Task.Run(() => serverConnection.ListenForMessage());
-            /**
-             * Execute code to do with the login response
-             */
+            
 
             if (serverResponse == "5/0")
             {

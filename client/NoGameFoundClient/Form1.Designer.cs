@@ -446,39 +446,39 @@
 
         #endregion
 
-        private System.Windows.Forms.Label UserLbl;
-        private System.Windows.Forms.TextBox userTextBox;
-        private System.Windows.Forms.Button LoginButton;
         private System.Windows.Forms.GroupBox LoginGroupBox;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label UserLbl;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox userTextBox;
         private System.Windows.Forms.TextBox passwordTextBox;
+        private System.Windows.Forms.Button LoginButton;
+        private System.Windows.Forms.LinkLabel registerLinkLbl;
         private System.Windows.Forms.GroupBox RegistergroupBox;
         private System.Windows.Forms.Label registerPasswordLbl;
-        private System.Windows.Forms.TextBox registerPasswordTextBox;
-        private System.Windows.Forms.Button RegisterButton;
         private System.Windows.Forms.Label usrLbl;
-        private System.Windows.Forms.TextBox registerUsrTextBox;
-        private System.Windows.Forms.CheckBox spamCheckBox;
         private System.Windows.Forms.Label mailLbl;
         private System.Windows.Forms.Label ageLabel;
-        private System.Windows.Forms.TextBox registerMailTextBox;
-        private System.Windows.Forms.TextBox registerAgeTextBox;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.LinkLabel registerLinkLbl;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ProgressBar serverConnectionProgressBar;
-        private System.Windows.Forms.Label pregressBarLbl;
-        private System.Windows.Forms.Label serverStatusLbl;
+        private System.Windows.Forms.TextBox registerUsrTextBox;
+        private System.Windows.Forms.TextBox registerPasswordTextBox;
+        private System.Windows.Forms.TextBox registerAgeTextBox;
+        private System.Windows.Forms.TextBox registerMailTextBox;
+        private System.Windows.Forms.CheckBox spamCheckBox;
+        private System.Windows.Forms.Button RegisterButton;
         private System.Windows.Forms.GroupBox profileInformationGroup;
         private System.Windows.Forms.RichTextBox richTextBox2;
-        private System.Windows.Forms.CheckBox PISpamCheckBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button SpamModifyButton;
-        private System.Windows.Forms.Button getAgeButton;
-        private System.Windows.Forms.Button getMailButton;
         private System.Windows.Forms.Label getAgeLabel;
         private System.Windows.Forms.Label getMailLabel;
+        private System.Windows.Forms.Button getAgeButton;
+        private System.Windows.Forms.Button getMailButton;
+        private System.Windows.Forms.CheckBox PISpamCheckBox;
+        private System.Windows.Forms.Button SpamModifyButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ProgressBar serverConnectionProgressBar;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label pregressBarLbl;
+        private System.Windows.Forms.Label serverStatusLbl;
     }
 }
 
