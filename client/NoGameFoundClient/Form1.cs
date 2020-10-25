@@ -22,7 +22,7 @@ namespace WindowsFormsApplication1
         async private void Form1_Shown(object sender, EventArgs e)
         {
             serverStatusLbl.Text = "Status: conecting...";
-            serverConnection = new ServerConnectionThread("192.168.1.174", 13550);
+            serverConnection = new ServerConnectionThread("192.168.1.115", 13555);
 
             int connectionSuccess = await Task.Run(() =>
             {
@@ -98,6 +98,7 @@ namespace WindowsFormsApplication1
             serverConnection.DisconnectFromServer();
             serverStatusLbl.Text = "Disconnected";
             serverStatusLbl.ForeColor = Color.Black;
+            disconnectServerBtn.Enabled = false;
         }
 
         async private void RegisterButton_Click(object sender, EventArgs e)
