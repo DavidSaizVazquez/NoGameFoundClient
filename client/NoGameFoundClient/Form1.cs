@@ -100,7 +100,7 @@ namespace WindowsFormsApplication1
             serverStatusLbl.ForeColor = Color.Black;
         }
 
-        private void RegisterButton_Click(object sender, EventArgs e)
+        async private void RegisterButton_Click(object sender, EventArgs e)
         {
             
             String usr = registerUsrTextBox.Text;
@@ -121,9 +121,24 @@ namespace WindowsFormsApplication1
 
                 serverConnection.SendMessage("2/" + usr + "," + pass + "," + age + "," + mail + "," + spam);
 
-                LoginGroupBox.Visible = true;
-                RegistergroupBox.Visible = false;
+
+                String serverResponse = await Task.Run(() => serverConnection.ListenForMessage());
+
+                if (serverResponse.Equals("2/0"))
+                {
+                    LoginGroupBox.Visible = true;
+                    RegistergroupBox.Visible = false;
+
+                }
+
+                else
+                {
+                    errorDialogLabel.Text = "Register Error";
+                    Console.WriteLine("Register Error");
+                }
             }
+
+            
         }
 
         private void registerLinkLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

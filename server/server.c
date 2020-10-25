@@ -116,7 +116,7 @@ int getEmail(MYSQL* conn, char username[20], char mailOutput[20]) {
 
 int setSpam(MYSQL* conn, char username[20], int spam) {
 	char consult[120] = {};
-	if (sprintf(consult, "Update Users SET spam=\'%d\' WHERE (Username = \'%s\');", !spam, username) < 0) {
+	if (sprintf(consult, "Update Users SET spam=\'%d\' WHERE (Username = \'%s\');", spam, username) < 0) {
 		return -1;
 	}
 	else {
