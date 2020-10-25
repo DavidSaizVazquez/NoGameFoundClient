@@ -456,12 +456,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(725, 345);
             this.Controls.Add(this.profileInformationGroup);
             this.Controls.Add(this.serverStatusLbl);
             this.Controls.Add(this.pregressBarLbl);
             this.Controls.Add(this.serverConnectionProgressBar);
             this.Controls.Add(this.RegistergroupBox);
+=======
+            this.ClientSize = new System.Drawing.Size(534, 542);
+>>>>>>> DS_Cmake
             this.Controls.Add(this.button3);
             this.Controls.Add(this.LoginGroupBox);
             this.Name = "Form1";
