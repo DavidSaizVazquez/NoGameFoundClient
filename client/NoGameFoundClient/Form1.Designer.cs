@@ -36,7 +36,7 @@
             this.registerLinkLbl = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
+            this.disconnectServerBtn = new System.Windows.Forms.Button();
             this.RegistergroupBox = new System.Windows.Forms.GroupBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.registerMailTextBox = new System.Windows.Forms.TextBox();
@@ -53,14 +53,15 @@
             this.pregressBarLbl = new System.Windows.Forms.Label();
             this.serverStatusLbl = new System.Windows.Forms.Label();
             this.profileInformationGroup = new System.Windows.Forms.GroupBox();
+            this.getAgeLabel = new System.Windows.Forms.Label();
+            this.getMailLabel = new System.Windows.Forms.Label();
             this.getAgeButton = new System.Windows.Forms.Button();
             this.getMailButton = new System.Windows.Forms.Button();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.PISpamCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.SpamModifyButton = new System.Windows.Forms.Button();
-            this.getMailLabel = new System.Windows.Forms.Label();
-            this.getAgeLabel = new System.Windows.Forms.Label();
+            this.errorDialogLabel = new System.Windows.Forms.Label();
             this.LoginGroupBox.SuspendLayout();
             this.RegistergroupBox.SuspendLayout();
             this.profileInformationGroup.SuspendLayout();
@@ -90,7 +91,7 @@
             this.LoginButton.Location = new System.Drawing.Point(192, 101);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(75, 23);
-            this.LoginButton.TabIndex = 5;
+            this.LoginButton.TabIndex = 0;
             this.LoginButton.Text = "Login";
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
@@ -127,7 +128,7 @@
             this.registerLinkLbl.Location = new System.Drawing.Point(188, 141);
             this.registerLinkLbl.Name = "registerLinkLbl";
             this.registerLinkLbl.Size = new System.Drawing.Size(49, 13);
-            this.registerLinkLbl.TabIndex = 19;
+            this.registerLinkLbl.TabIndex = 1;
             this.registerLinkLbl.TabStop = true;
             this.registerLinkLbl.Text = "Register!";
             this.registerLinkLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.registerLinkLbl_LinkClicked);
@@ -151,17 +152,18 @@
             this.passwordTextBox.Size = new System.Drawing.Size(164, 20);
             this.passwordTextBox.TabIndex = 11;
             // 
-            // button3
+            // disconnectServerBtn
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(594, 316);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(126, 23);
-            this.button3.TabIndex = 10;
-            this.button3.Text = "Disconnect from server";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.DisconnectButton_Click);
+            this.disconnectServerBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.disconnectServerBtn.Enabled = false;
+            this.disconnectServerBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.disconnectServerBtn.Location = new System.Drawing.Point(594, 316);
+            this.disconnectServerBtn.Name = "disconnectServerBtn";
+            this.disconnectServerBtn.Size = new System.Drawing.Size(126, 23);
+            this.disconnectServerBtn.TabIndex = 10;
+            this.disconnectServerBtn.Text = "Disconnect from server";
+            this.disconnectServerBtn.UseVisualStyleBackColor = true;
+            this.disconnectServerBtn.Click += new System.EventHandler(this.DisconnectButton_Click);
             // 
             // RegistergroupBox
             // 
@@ -191,6 +193,7 @@
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox1.Location = new System.Drawing.Point(81, 184);
             this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(264, 38);
             this.richTextBox1.TabIndex = 17;
             this.richTextBox1.Text = "Do you want to receive notifications of upcomming Game news and updates?";
@@ -202,7 +205,7 @@
             this.registerMailTextBox.Name = "registerMailTextBox";
             this.registerMailTextBox.PasswordChar = '*';
             this.registerMailTextBox.Size = new System.Drawing.Size(164, 20);
-            this.registerMailTextBox.TabIndex = 16;
+            this.registerMailTextBox.TabIndex = 3;
             // 
             // registerAgeTextBox
             // 
@@ -211,7 +214,7 @@
             this.registerAgeTextBox.Name = "registerAgeTextBox";
             this.registerAgeTextBox.PasswordChar = '*';
             this.registerAgeTextBox.Size = new System.Drawing.Size(164, 20);
-            this.registerAgeTextBox.TabIndex = 15;
+            this.registerAgeTextBox.TabIndex = 2;
             // 
             // spamCheckBox
             // 
@@ -219,7 +222,7 @@
             this.spamCheckBox.Location = new System.Drawing.Point(60, 184);
             this.spamCheckBox.Name = "spamCheckBox";
             this.spamCheckBox.Size = new System.Drawing.Size(15, 14);
-            this.spamCheckBox.TabIndex = 14;
+            this.spamCheckBox.TabIndex = 4;
             this.spamCheckBox.UseVisualStyleBackColor = true;
             // 
             // mailLbl
@@ -259,7 +262,7 @@
             this.registerPasswordTextBox.Name = "registerPasswordTextBox";
             this.registerPasswordTextBox.PasswordChar = '*';
             this.registerPasswordTextBox.Size = new System.Drawing.Size(164, 20);
-            this.registerPasswordTextBox.TabIndex = 11;
+            this.registerPasswordTextBox.TabIndex = 1;
             // 
             // RegisterButton
             // 
@@ -288,7 +291,7 @@
             this.registerUsrTextBox.Location = new System.Drawing.Point(149, 31);
             this.registerUsrTextBox.Name = "registerUsrTextBox";
             this.registerUsrTextBox.Size = new System.Drawing.Size(164, 20);
-            this.registerUsrTextBox.TabIndex = 3;
+            this.registerUsrTextBox.TabIndex = 0;
             // 
             // serverConnectionProgressBar
             // 
@@ -342,12 +345,28 @@
             this.profileInformationGroup.Text = "Profile Information";
             this.profileInformationGroup.Visible = false;
             // 
+            // getAgeLabel
+            // 
+            this.getAgeLabel.AutoSize = true;
+            this.getAgeLabel.Location = new System.Drawing.Point(141, 53);
+            this.getAgeLabel.Name = "getAgeLabel";
+            this.getAgeLabel.Size = new System.Drawing.Size(0, 13);
+            this.getAgeLabel.TabIndex = 21;
+            // 
+            // getMailLabel
+            // 
+            this.getMailLabel.AutoSize = true;
+            this.getMailLabel.Location = new System.Drawing.Point(141, 27);
+            this.getMailLabel.Name = "getMailLabel";
+            this.getMailLabel.Size = new System.Drawing.Size(0, 13);
+            this.getMailLabel.TabIndex = 20;
+            // 
             // getAgeButton
             // 
             this.getAgeButton.Location = new System.Drawing.Point(60, 48);
             this.getAgeButton.Name = "getAgeButton";
             this.getAgeButton.Size = new System.Drawing.Size(75, 23);
-            this.getAgeButton.TabIndex = 19;
+            this.getAgeButton.TabIndex = 1;
             this.getAgeButton.Text = "Get Age";
             this.getAgeButton.UseVisualStyleBackColor = true;
             this.getAgeButton.Click += new System.EventHandler(this.getAgeButton_Click);
@@ -357,7 +376,7 @@
             this.getMailButton.Location = new System.Drawing.Point(60, 19);
             this.getMailButton.Name = "getMailButton";
             this.getMailButton.Size = new System.Drawing.Size(75, 23);
-            this.getMailButton.TabIndex = 18;
+            this.getMailButton.TabIndex = 0;
             this.getMailButton.Text = "Get Mail";
             this.getMailButton.UseVisualStyleBackColor = true;
             this.getMailButton.Click += new System.EventHandler(this.getMailButton_Click);
@@ -368,6 +387,7 @@
             this.richTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox2.Location = new System.Drawing.Point(81, 184);
             this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.ReadOnly = true;
             this.richTextBox2.Size = new System.Drawing.Size(264, 38);
             this.richTextBox2.TabIndex = 17;
             this.richTextBox2.Text = "Do you want to receive notifications of upcomming Game news and updates?";
@@ -378,7 +398,7 @@
             this.PISpamCheckBox.Location = new System.Drawing.Point(60, 184);
             this.PISpamCheckBox.Name = "PISpamCheckBox";
             this.PISpamCheckBox.Size = new System.Drawing.Size(15, 14);
-            this.PISpamCheckBox.TabIndex = 14;
+            this.PISpamCheckBox.TabIndex = 2;
             this.PISpamCheckBox.UseVisualStyleBackColor = true;
             // 
             // label3
@@ -397,38 +417,34 @@
             this.SpamModifyButton.Location = new System.Drawing.Point(134, 222);
             this.SpamModifyButton.Name = "SpamModifyButton";
             this.SpamModifyButton.Size = new System.Drawing.Size(97, 23);
-            this.SpamModifyButton.TabIndex = 5;
+            this.SpamModifyButton.TabIndex = 3;
             this.SpamModifyButton.Text = "Modify Spam";
             this.SpamModifyButton.UseVisualStyleBackColor = true;
             this.SpamModifyButton.Click += new System.EventHandler(this.SpamModifyButton_Click);
             // 
-            // getMailLabel
+            // errorDialogLabel
             // 
-            this.getMailLabel.AutoSize = true;
-            this.getMailLabel.Location = new System.Drawing.Point(141, 27);
-            this.getMailLabel.Name = "getMailLabel";
-            this.getMailLabel.Size = new System.Drawing.Size(0, 13);
-            this.getMailLabel.TabIndex = 20;
-            // 
-            // getAgeLabel
-            // 
-            this.getAgeLabel.AutoSize = true;
-            this.getAgeLabel.Location = new System.Drawing.Point(141, 53);
-            this.getAgeLabel.Name = "getAgeLabel";
-            this.getAgeLabel.Size = new System.Drawing.Size(0, 13);
-            this.getAgeLabel.TabIndex = 21;
+            this.errorDialogLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.errorDialogLabel.AutoSize = true;
+            this.errorDialogLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.errorDialogLabel.ForeColor = System.Drawing.Color.Red;
+            this.errorDialogLabel.Location = new System.Drawing.Point(0, 316);
+            this.errorDialogLabel.Name = "errorDialogLabel";
+            this.errorDialogLabel.Size = new System.Drawing.Size(0, 13);
+            this.errorDialogLabel.TabIndex = 16;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(725, 345);
+            this.Controls.Add(this.errorDialogLabel);
             this.Controls.Add(this.profileInformationGroup);
             this.Controls.Add(this.serverStatusLbl);
             this.Controls.Add(this.pregressBarLbl);
             this.Controls.Add(this.serverConnectionProgressBar);
             this.Controls.Add(this.RegistergroupBox);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.disconnectServerBtn);
             this.Controls.Add(this.LoginGroupBox);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -453,7 +469,6 @@
         private System.Windows.Forms.TextBox passwordTextBox;
         private System.Windows.Forms.Button LoginButton;
         private System.Windows.Forms.LinkLabel registerLinkLbl;
-        private System.Windows.Forms.GroupBox RegistergroupBox;
         private System.Windows.Forms.Label registerPasswordLbl;
         private System.Windows.Forms.Label usrLbl;
         private System.Windows.Forms.Label mailLbl;
@@ -465,6 +480,7 @@
         private System.Windows.Forms.TextBox registerMailTextBox;
         private System.Windows.Forms.CheckBox spamCheckBox;
         private System.Windows.Forms.Button RegisterButton;
+        private System.Windows.Forms.GroupBox RegistergroupBox;
         private System.Windows.Forms.GroupBox profileInformationGroup;
         private System.Windows.Forms.RichTextBox richTextBox2;
         private System.Windows.Forms.Label label3;
@@ -476,9 +492,10 @@
         private System.Windows.Forms.Button SpamModifyButton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ProgressBar serverConnectionProgressBar;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button disconnectServerBtn;
         private System.Windows.Forms.Label pregressBarLbl;
         private System.Windows.Forms.Label serverStatusLbl;
+        private System.Windows.Forms.Label errorDialogLabel;
     }
 }
 
