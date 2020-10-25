@@ -39,6 +39,7 @@ namespace WindowsFormsApplication1
                 serverStatusLbl.ForeColor = Color.Green;
                 LoginButton.Enabled = true;
                 RegisterButton.Enabled = true;
+                disconnectServerBtn.Enabled = true;
             }
 
             else
@@ -46,7 +47,7 @@ namespace WindowsFormsApplication1
             {
                 serverConnectionProgressBar.Visible = false;
                 pregressBarLbl.Visible = false;
-                serverStatusLbl.Text = "Status: Connection Timed out";
+                serverStatusLbl.Text = "Status: Server Connection error";
                 serverStatusLbl.ForeColor = Color.Red;
             }
 
@@ -69,26 +70,25 @@ namespace WindowsFormsApplication1
             {
                 this.user = userTextBox.Text;
                 serverConnection.SendMessage("6/" + this.user);
-                String spamResponse = await Task.Run(() => serverConnection.ListenForMessage());
-                PISpamCheckBox.Checked = spamResponse.Replace("/6", "") == "1";
+                String spamResponse = await Task.Run(() => serverConnection.ListenForMessage());       
+                PISpamCheckBox.Checked = spamResponse.Equals("6/1");
                 profileInformationGroup.Visible = true;
                 SpamModifyButton.Enabled = true;
                 LoginGroupBox.Visible = false;
+
+                loginStatusLbl.Visible = true;
                 loginStatusLbl.ForeColor = Color.Green;
                 loginStatusLbl.Text = "Logged In!";
-
-
 
             }
             else
             {
+                loginStatusLbl.Visible = true;
+                errorDialogLabel.Visible = true;
                 loginStatusLbl.ForeColor = Color.Red;
                 loginStatusLbl.Text = "User not found, please register";
-
+                errorDialogLabel.Text = "Login Error";
                 Console.WriteLine("Login Error");
-                /**
-                 * Notify error in ui
-                 */
             }
 
         }
@@ -96,20 +96,26 @@ namespace WindowsFormsApplication1
         private void DisconnectButton_Click(object sender, EventArgs e)
         {
             serverConnection.DisconnectFromServer();
+            serverStatusLbl.Text = "Disconnected";
+            serverStatusLbl.ForeColor = Color.Black;
         }
 
         private void RegisterButton_Click(object sender, EventArgs e)
         {
+            
             String usr = registerUsrTextBox.Text;
             String pass = registerPasswordTextBox.Text;
             String age = registerAgeTextBox.Text;
             String mail = registerMailTextBox.Text;
             if (String.IsNullOrEmpty(usr) || String.IsNullOrEmpty(pass) || String.IsNullOrEmpty(age) || String.IsNullOrEmpty(mail))
             {
-                // Do something...
+                loginStatusLbl.Visible = true;
+                loginStatusLbl.ForeColor = Color.Red;
+                loginStatusLbl.Text = "Fill in all fields";
             }
             else
             {
+                loginStatusLbl.Visible = false;
 
                 Boolean spam = spamCheckBox.Checked;
 
@@ -122,6 +128,8 @@ namespace WindowsFormsApplication1
 
         private void registerLinkLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            loginStatusLbl.Visible = false;
+            errorDialogLabel.Visible = false;
             LoginGroupBox.Visible = false;
             RegistergroupBox.Visible = true;
         }
@@ -152,10 +160,12 @@ namespace WindowsFormsApplication1
 
             if (serverResponse == "5/0")
             {
+                
                 Console.WriteLine("Change spam successful!");
             }
             else
             {
+                errorDialogLabel.Text = "Change spam error";
                 Console.WriteLine("Change spam error");
                 /**
                  * Notify error in ui
@@ -163,9 +173,15 @@ namespace WindowsFormsApplication1
             }
         }
 
-        private void registerAgeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+
+        private void registerAgeTextBox_TextChanged(object sender, EventArgs e)
         {
-            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+            int n;
+            if (!int.TryParse(registerAgeTextBox.Text, out n))
+            {
+                registerAgeTextBox.Text = "";
+            }
+
         }
     }
 }

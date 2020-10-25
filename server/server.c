@@ -19,7 +19,7 @@ int initMySQLServer(MYSQL **conn) {
 
 	//inicializar la conexion, indicando nuestras claves de acceso
 	// al servidor de bases de datos (user,pass)
-	*conn = mysql_real_connect(*conn, "localhost", "root", "admin", "GameDB", 0, NULL, 0); // CHANGE TO THE COMPUTER SETTINGS
+	*conn = mysql_real_connect(*conn, "localhost", "root", "", "GameDB", 0, NULL, 0); // CHANGE TO THE COMPUTER SETTINGS
 	if (*conn == NULL)
 	{
 		printf("Error al inicializar la conexion: %u %s\n",
