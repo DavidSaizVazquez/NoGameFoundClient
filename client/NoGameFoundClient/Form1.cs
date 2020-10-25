@@ -1,7 +1,6 @@
 ﻿using NoGameFoundClient;
 using System;
 using System.Windows.Forms;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Drawing;
 
@@ -44,7 +43,7 @@ namespace WindowsFormsApplication1
             {
                 serverConnectionProgressBar.Visible = false;
                 pregressBarLbl.Visible = false;
-                serverStatusLbl.Text = "Status: Connection Refused";
+                serverStatusLbl.Text = "Status: Connection Timed out";
                 serverStatusLbl.ForeColor = Color.Red;
             }
 
