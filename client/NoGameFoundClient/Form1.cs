@@ -22,7 +22,7 @@ namespace WindowsFormsApplication1
         async private void Form1_Shown(object sender, EventArgs e)
         {
             serverStatusLbl.Text = "Status: conecting...";
-            serverConnection = new ServerConnectionThread("192.168.1.115", 13555);
+            serverConnection = new ServerConnectionThread("192.168.1.174", 13555);
 
             int connectionSuccess = await Task.Run(() =>
             {
@@ -129,13 +129,15 @@ namespace WindowsFormsApplication1
                 {
                     LoginGroupBox.Visible = true;
                     RegistergroupBox.Visible = false;
+                    errorDialogLabel.Visible = false;
 
                 }
 
                 else
                 {
-                    errorDialogLabel.Text = "Register Error";
-                    Console.WriteLine("Register Error");
+                    errorDialogLabel.Visible = true;
+                    errorDialogLabel.Text = "Register Error: User already exists";
+                    Console.WriteLine("Register Error: User already exists");
                 }
             }
 
