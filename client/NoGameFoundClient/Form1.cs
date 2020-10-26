@@ -22,7 +22,7 @@ namespace WindowsFormsApplication1
         async private void Form1_Shown(object sender, EventArgs e)
         {
             serverStatusLbl.Text = "Status: conecting...";
-            serverConnection = new ServerConnectionThread("192.168.1.174", 13555);
+            serverConnection = new ServerConnectionThread("192.168.1.115", 13555);
 
             int connectionSuccess = await Task.Run(() =>
             {
@@ -118,7 +118,7 @@ namespace WindowsFormsApplication1
             {
                 loginStatusLbl.Visible = false;
 
-                Boolean spam = spamCheckBox.Checked;
+                int spam = spamCheckBox.Checked ? 1:0;
 
                 serverConnection.SendMessage("2/" + usr + "," + pass + "," + age + "," + mail + "," + spam);
 
