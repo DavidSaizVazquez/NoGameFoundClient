@@ -19,7 +19,7 @@ int initMySQLServer(MYSQL **conn) {
 
 	//inicializar la conexion, indicando nuestras claves de acceso
 	// al servidor de bases de datos (user,pass)
-	*conn = mysql_real_connect(*conn, "localhost", "root", "", "GameDB", 0, NULL, 0); // CHANGE TO THE COMPUTER SETTINGS
+	*conn = mysql_real_connect(*conn, "localhost", "root", "admin", "GameDB", 0, NULL, 0); // CHANGE TO THE COMPUTER SETTINGS
 	if (*conn == NULL)
 	{
 		printf("Error al inicializar la conexion: %u %s\n",
@@ -84,15 +84,30 @@ int loginUser(MYSQL *conn, char username[20], char password[20]) {
 
 int addUser(MYSQL *conn, char username[20], char password[20], int age, char mail[20], int spam){
 	char consult[120]={};
-	if(sprintf(consult,"INSERT INTO Users(Username,Pwd,Age, Mail,Spam) VALUES (\'%s\',\'%s\',\'%d\',\'%s\',\'%d\');",username, password, age, mail,!spam)<0){
-		return -1;
-	}
-	else {
-		if(mysql_query(conn, consult)<0){
-			return -1;
-		}
-	}
-	return 0;
+    MYSQL_RES* result;
+    MYSQL_ROW row;
+    if (sprintf(consult, "SELECT * FROM Users WHERE (Username = \'%s\');", username) < 0) {
+        return -1;
+    }
+    else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    result = mysql_store_result(conn);
+    row = mysql_fetch_row(result);
+    if (row != NULL)return -1;
+    if(sprintf(consult,"INSERT INTO Users(Username,Pwd,Age, Mail,Spam) VALUES (\'%s\',\'%s\',\'%d\',\'%s\',\'%d\');",username, password, age, mail,spam)<0){
+        return -1;
+    }
+    else {
+        if(mysql_query(conn, consult)<0){
+            return -1;
+        }
+    }
+    return 0;
+
+
 }
 
 int getEmail(MYSQL* conn, char username[20], char mailOutput[20]) {
@@ -187,7 +202,7 @@ int main(int argc, char *argv[])
         printf("Mysql opened");
 	}
 
-	if (startTCPServer(&serv_adr,&sock_conn, &sock_listen, 13555) < 0) {
+	if (startTCPServer(&serv_adr,&sock_conn, &sock_listen, 9900) < 0) {
 		printf("Error opening tcp socket");
 		exit(1);
 	}
