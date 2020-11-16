@@ -13,7 +13,7 @@
 #include "mysql.h"
 
 
-int initMySQLServer(MYSQL **conn) {
+int initMySQLServer(MYSQL **conn,char* host, char* user, char* passw, char* db) {
     //Creamos una conexion al servidor MYSQL
     *conn = mysql_init(NULL);
     if (conn == NULL) {
@@ -23,8 +23,8 @@ int initMySQLServer(MYSQL **conn) {
     }
 
     //inicializar la conexion, indicando nuestras claves de acceso
-    // al servidor de bases de datos (user,pass)
-    *conn = mysql_real_connect(*conn, "localhost", "root", "root", "GameDB", 0, NULL,
+    // al servidor de bases de datos (userName,pass)
+    *conn = mysql_real_connect(*conn, host, user, passw, db, 0, NULL,
                                0); // CHANGE TO THE COMPUTER SETTINGS
     if (*conn == NULL) {
         printf("Error al inicializar la conexion: %u %s\n",

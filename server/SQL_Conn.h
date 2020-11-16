@@ -6,7 +6,7 @@
 #define SERVER_SQL_CONN_H
 #include <mysql.h>
 
-int initMySQLServer(MYSQL **conn);
+int initMySQLServer(MYSQL **conn,char* host, char* user, char* passw, char* db);
 
 int loginUser(MYSQL *conn, char username[20], char password[20]);
 int addUser(MYSQL *conn, char username[20], char password[20], int age, char mail[20], int spam);
