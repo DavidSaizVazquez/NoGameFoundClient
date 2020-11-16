@@ -118,7 +118,7 @@ namespace WindowsFormsApplication1
             {
                 loginStatusLbl.Visible = false;
 
-                Boolean spam = spamCheckBox.Checked;
+                int spam = spamCheckBox.Checked ? 1:0;
 
                 serverConnection.SendMessage("2/" + usr + "," + pass + "," + age + "," + mail + "," + spam);
 
@@ -129,13 +129,15 @@ namespace WindowsFormsApplication1
                 {
                     LoginGroupBox.Visible = true;
                     RegistergroupBox.Visible = false;
+                    errorDialogLabel.Visible = false;
 
                 }
 
                 else
                 {
-                    errorDialogLabel.Text = "Register Error";
-                    Console.WriteLine("Register Error");
+                    errorDialogLabel.Visible = true;
+                    errorDialogLabel.Text = "Register Error: User already exists";
+                    Console.WriteLine("Register Error: User already exists");
                 }
             }
 

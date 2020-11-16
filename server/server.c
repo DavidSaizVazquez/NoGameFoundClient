@@ -1,14 +1,12 @@
-#include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <mysql.h>
 #include "TCP_Server.h"
 #include "SQL_Conn.h"
+#include <stdio.h>
+#include "mysql.h"
+
 
 int main()
 {
