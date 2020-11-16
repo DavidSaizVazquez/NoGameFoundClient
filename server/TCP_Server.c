@@ -25,6 +25,7 @@ void *connection_handler(void *arg)
     char mail[20] = {};
     int spam;
     int i = 0;
+    int login=0;
 
     while (stop == 0) {
         ret = read(sock_conn, petition, sizeof(petition));
@@ -54,8 +55,11 @@ void *connection_handler(void *arg)
                     p = strtok(NULL, ",");
                     if (p != NULL)strcpy(password, p);
                     pthread_mutex_lock(args->mutex);
-                    sprintf(answer, "1/%d", loginUser(conn, user, password));
-                    strcpy(args->userList->list[pos].userName, user);
+                    login=loginUser(conn, user, password);
+                    sprintf(answer, "1/%d",login);
+                    if(login==0) {
+                        strcpy(args->userList->list[pos].userName, user);
+                    }
                     pthread_mutex_unlock(args->mutex);
                     break;
                 case 2:
