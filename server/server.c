@@ -11,7 +11,7 @@
 int main()
 {
     //config variables
-    int PORT=9000;
+    int PORT=9990;
     //mysql
     char* host="localhost";
     char* user="root";

@@ -36,9 +36,9 @@ void *connection_handler(void *arg)
             petition[ret] = '\0';
             printf("Petition: %s\n", petition);
             char *p = strtok(petition, "/");
-            if(p==NULL){
+            if (p == NULL) {
                 printf("not formated message, closing\n");
-                stop=1;
+                stop = 1;
                 break;
             }
             char data[512] = {};
@@ -55,9 +55,9 @@ void *connection_handler(void *arg)
                     p = strtok(NULL, ",");
                     if (p != NULL)strcpy(password, p);
                     pthread_mutex_lock(args->mutex);
-                    login=loginUser(conn, user, password);
-                    sprintf(answer, "1/%d",login);
-                    if(login==0) {
+                    login = loginUser(conn, user, password);
+                    sprintf(answer, "1/%d", login);
+                    if (login == 0) {
                         strcpy(args->userList->list[pos].userName, user);
                     }
                     pthread_mutex_unlock(args->mutex);
@@ -118,11 +118,11 @@ void *connection_handler(void *arg)
                     break;
                 case 7:
                     //GET USER LIST -->7/0 returns 7/user1,user2,user3,...,
-                    strcpy(answer,"7/");
+                    strcpy(answer, "7/");
                     pthread_mutex_lock(args->mutex);
-                    for(i=0;i<args->userList->num;i++){
-                        strcat(answer,args->userList->list[i].userName);
-                        strcat(answer,",");
+                    for (i = 0; i < args->userList->num; i++) {
+                        strcat(answer, args->userList->list[i].userName);
+                        strcat(answer, ",");
                     }
                     pthread_mutex_unlock(args->mutex);
                     break;
@@ -137,6 +137,7 @@ void *connection_handler(void *arg)
             }
         }
     }
+    strcpy(args->userList->list[pos].userName, "");
     close(sock_conn);
     return NULL;
 }
