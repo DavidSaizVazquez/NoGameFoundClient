@@ -18,6 +18,8 @@ int main()
     char* passw="admin";
     char * db="GameDB";
 
+
+
     int sock_conn, sock_listen;
     struct sockaddr_in serv_adr;
     UserList userList={};
