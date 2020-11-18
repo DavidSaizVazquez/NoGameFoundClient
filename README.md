@@ -5,7 +5,7 @@
 * Revised by Tania
 * Comunicated by Pau
 
-## Varsion 2.0
+## Version 2.0
 * Uploaded by Tania
 * Revised by Pau
 * Comunicated by David
