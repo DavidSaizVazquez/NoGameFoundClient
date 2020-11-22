@@ -18,7 +18,7 @@ int main()
     //mysql
     char* host="localhost";
     char* user="root";
-    char* passw="admin";
+    char* passw="root";
     char * db="GameDB";
 
     int sock_conn, sock_listen;
@@ -54,7 +54,6 @@ int main()
         printf("accepted %d at socket: %d\n",i, sock_conn);
         pthread_mutex_lock(&mutex);
         userList.list[i].socket=sock_conn;
-        userList.num++;
         if(pthread_create(&threads[i] , NULL , connection_handler , (void*) &i) != 0)
         {
             perror("could not create thread");
