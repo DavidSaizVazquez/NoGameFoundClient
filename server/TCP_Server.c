@@ -5,20 +5,20 @@
 
 #include "TCP_Server.h"
 
-
+extern MYSQL * conn;
+extern UserList userList;
+extern pthread_mutex_t mutex;
 
 
 
 void *connection_handler(void *arg)
 {
     int stop = 0;
-    Args *args = (Args *)arg;
-    int sock_conn = args->sock;
-    int pos = args->pos;
+    int pos =*(int*)arg;
+    int sock_conn = userList.list[pos].socket;
     int ret;
     char petition[512] = {};
     char answer[512] = {};
-    MYSQL *conn = args->conn;
     char user[20] = {};
     char password[20] = {};
     int age = 33;
@@ -54,13 +54,13 @@ void *connection_handler(void *arg)
                     if (p != NULL)strcpy(user, p);
                     p = strtok(NULL, ",");
                     if (p != NULL)strcpy(password, p);
-                    pthread_mutex_lock(args->mutex);
+                    pthread_mutex_lock(&mutex);
                     login = loginUser(conn, user, password);
                     sprintf(answer, "1/%d", login);
                     if (login == 0) {
-                        strcpy(args->userList->list[pos].userName, user);
+                        strcpy(userList.list[pos].userName, user);
                     }
-                    pthread_mutex_unlock(args->mutex);
+                    pthread_mutex_unlock(&mutex);
                     break;
                 case 2:
                     //REGISTER 1/userName,password,age,mail,spam -->1/0 good 1/-1 not good
@@ -74,17 +74,17 @@ void *connection_handler(void *arg)
                     if (p != NULL)strcpy(mail, p);
                     p = strtok(NULL, ",");
                     if (p != NULL)spam = (int) strtol(p, (char **) NULL, 10);
-                    pthread_mutex_lock(args->mutex);
+                    pthread_mutex_lock(&mutex);
                     sprintf(answer, "2/%d", addUser(conn, user, password, age, mail, spam));
-                    pthread_mutex_unlock(args->mutex);
+                    pthread_mutex_unlock(&mutex);
                     break;
                 case 3:
                     //GET AGE 2/userName -->2/age
                     p = strtok(data, ",");
                     if (p != NULL)strcpy(user, p);
-                    pthread_mutex_lock(args->mutex);
+                    pthread_mutex_lock(&mutex);
                     getAge(conn, user, &age);
-                    pthread_mutex_unlock(args->mutex);
+                    pthread_mutex_unlock(&mutex);
                     sprintf(answer, "3/%d", age);
                     break;
 
@@ -92,9 +92,9 @@ void *connection_handler(void *arg)
                     //GET MAIL 3/userName -->3/mail
                     p = strtok(data, ",");
                     if (p != NULL)strcpy(user, p);
-                    pthread_mutex_lock(args->mutex);
+                    pthread_mutex_lock(&mutex);
                     getEmail(conn, user, mail);
-                    pthread_mutex_unlock(args->mutex);
+                    pthread_mutex_unlock(&mutex);
                     sprintf(answer, "4/%s", mail);
                     break;
                 case 5:
@@ -103,28 +103,25 @@ void *connection_handler(void *arg)
                     if (p != NULL)strcpy(user, p);
                     p = strtok(NULL, ",");
                     if (p != NULL)spam = (int) strtol(p, (char **) NULL, 10);
-                    pthread_mutex_lock(args->mutex);
+                    pthread_mutex_lock(&mutex);
                     sprintf(answer, "5/%d", setSpam(conn, user, spam));
-                    pthread_mutex_unlock(args->mutex);
+                    pthread_mutex_unlock(&mutex);
                     break;
                 case 6:
                     //GET SPAM 6/userName-->6/1(true) else 6/0
                     p = strtok(data, ",");
                     if (p != NULL)strcpy(user, p);
-                    pthread_mutex_lock(args->mutex);
+                    pthread_mutex_lock(&mutex);
                     getSpam(conn, user, &spam);
-                    pthread_mutex_unlock(args->mutex);
+                    pthread_mutex_unlock(&mutex);
                     sprintf(answer, "6/%d", spam);
                     break;
                 case 7:
                     //GET USER LIST -->7/0 returns 7/user1,user2,user3,...,
                     strcpy(answer, "7/");
-                    pthread_mutex_lock(args->mutex);
-                    for (i = 0; i < args->userList->num; i++) {
-                        strcat(answer, args->userList->list[i].userName);
-                        strcat(answer, ",");
-                    }
-                    pthread_mutex_unlock(args->mutex);
+                    pthread_mutex_lock(&mutex);
+                    catUsers(&userList,answer);
+                    pthread_mutex_unlock(&mutex);
                     break;
                 default:
                     //ERROR CODE
@@ -134,10 +131,20 @@ void *connection_handler(void *arg)
                 printf("Answer: %s\n", answer);
                 // Send aswer
                 write(sock_conn, answer, strlen(answer));
+
+                if(code==1){
+                    for(int j=0; j<userList.num;j++){
+                        strcpy(answer, "7/");
+                        catUsers(&userList,answer);
+                        printf("sending %s to %s\n",answer,userList.list[j].userName);
+                        write(userList.list[j].socket, answer, strlen(answer));
+                    }
+                }
             }
         }
     }
-    strcpy(args->userList->list[pos].userName, "");
+    printf("closing user %s\n",userList.list[pos].userName);
+    strcpy(userList.list[pos].userName, "");
     close(sock_conn);
     return NULL;
 }

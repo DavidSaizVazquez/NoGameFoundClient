@@ -11,6 +11,7 @@
 
 typedef struct{
     char userName[20];
+    int socket;
 }User;
 
 typedef struct{
@@ -18,12 +19,5 @@ typedef struct{
     int num;
 }UserList;
 
-typedef struct{
-    int sock;
-    int pos;
-    MYSQL *conn;
-    pthread_mutex_t * mutex;
-    UserList * userList;
-}Args;
 
 #endif //SERVER_STRUCTS_H

@@ -13,7 +13,7 @@
 #include <pthread.h>
 
 #include "SQL_Conn.h"
-#include "Structs.h"
+#include "UserListUtils.h"
 
 
 void *connection_handler(void *arg);
