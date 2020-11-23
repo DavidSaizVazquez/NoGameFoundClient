@@ -3,13 +3,18 @@
 ## Version 1.0
 * Uploaded by David
 * Revised by Tania
-* Comunicated by Pau
+* Communicated by Pau
 
-## Varsion 2.0
+## Version 2.0
 * Uploaded by Tania
 * Revised by Pau
-* Comunicated by David
+* Communicated by David
 
 #### Exclusión mutua aplicada a:
 * Connexión a BDD sql
 * Uso de la lista de usuarios compartida
+
+## Version 3.0
+* Uploaded by Pau
+* Revised by David
+* Communicated by Tania
