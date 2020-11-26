@@ -13,6 +13,7 @@
 #include "mysql.h"
 
 
+
 int initMySQLServer(MYSQL **conn,char* host, char* user, char* passw, char* db) {
     //Creamos una conexion al servidor MYSQL
     *conn = mysql_init(NULL);
@@ -146,6 +147,56 @@ int getAge(MYSQL *conn, char username[20], int *ageOutput) {
     return 0;
 }
 
+int createGame(MYSQL* conn, char username[20], int *game){
+    char consult[512] = {};
+    MYSQL_RES *result;
+    MYSQL_ROW GameRow;
+    if (sprintf(consult, "INSERT INTO Games() VALUES ();INSERT INTO UsersPerGame(gameid, userid) VALUES ((SELECT LAST_INSERT_ID()),(SELECT Id FROM Users WHERE Username=\'%s\'));SELECT GameId FROM UsersPerGame, Users WHERE UserId=Users.Id AND Username=\'%s\';",username,username) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    result = mysql_store_result(conn);
+    GameRow = mysql_fetch_row(result);
+    if (GameRow == NULL)return -1;
+    *game = (int) strtol(GameRow[0], (char **) NULL, 10);
+    return 0;
+}
 
+int joinGame(MYSQL* conn, char username[20], int game){
+    char consult[120] = {};
+    if (sprintf(consult, "INSERT INTO UsersPerGame(gameid, userid) VALUES (%d,(SELECT Id FROM Users WHERE Username=\'%s\'));", game, username) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    return 0;
+}
+
+int usersFromGame(MYSQL* conn, UserList *ans, int game){
+    char consult[512] = {};
+    MYSQL_RES *result;
+    MYSQL_ROW userRow;
+    if (sprintf(consult, "SELECT Username FROM UsersPerGame, Users WHERE UsersPerGame.UserId=Users.Id AND GameId=%d;",game) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    result = mysql_store_result(conn);
+    userRow = mysql_fetch_row(result);
+    if (userRow == NULL)return -1;
+    int i=0;
+    while(userRow!=NULL){
+        strcat((char *) ans->list[i].userName, userRow[0]);
+        userRow = mysql_fetch_row(result);
+    }
+    return 0;
+}
 
 

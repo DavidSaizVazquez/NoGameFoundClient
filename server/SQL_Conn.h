@@ -5,6 +5,7 @@
 #ifndef SERVER_SQL_CONN_H
 #define SERVER_SQL_CONN_H
 #include <mysql.h>
+#include "Structs.h"
 
 int initMySQLServer(MYSQL **conn,char* host, char* user, char* passw, char* db);
 
@@ -14,5 +15,8 @@ int getEmail(MYSQL* conn, char username[20], char mailOutput[20]);
 int setSpam(MYSQL* conn, char username[20], int spam);
 int getSpam(MYSQL* conn, char username[20], int * spam);
 int getAge(MYSQL* conn, char username[20], int* ageOutput);
+int createGame(MYSQL* conn, char username[20], int* game);
+int joinGame(MYSQL* conn, char username[20], int game);
+int usersFromGame(MYSQL* conn, UserList *ans, int game);
 
 #endif //SERVER_SQL_CONN_H

@@ -10,6 +10,7 @@ extern UserList userList;
 extern pthread_mutex_t mutex;
 
 
+int sendInvitation(char user[20], int game);
 
 void *connection_handler(void *arg)
 {
@@ -24,8 +25,13 @@ void *connection_handler(void *arg)
     int age = 33;
     char mail[20] = {};
     int spam;
+    int game;
     int i = 0;
     int login=0;
+
+
+    UserName userNames[NUM_CLIENT] = {};
+    int refreshGameFlag=0;
 
     while (stop == 0) {
         ret = read(sock_conn, petition, sizeof(petition));
@@ -58,7 +64,7 @@ void *connection_handler(void *arg)
                     login = loginUser(conn, user, password);
                     sprintf(answer, "1/%d~", login);
                     if (login == 0) {
-                        strcpy(userList.list[pos].userName, user);
+                        strcpy((char *) userList.list[pos].userName, user);
                         userList.num++;
                     }
                     pthread_mutex_unlock(&mutex);
@@ -125,6 +131,28 @@ void *connection_handler(void *arg)
                     strcat(answer,"~");
                     pthread_mutex_unlock(&mutex);
                     break;
+                case 8:
+                    // CREATE GAME 8/user,game
+                    pthread_mutex_lock(&mutex);
+                    if(createGame(conn, (char *) userList.list[pos].userName, &game) == -1)game=-1;
+                    pthread_mutex_unlock(&mutex);
+                    sprintf(answer, "8/%d~", game);
+                case 9:
+                    //INVITE TO GAME 9/user,game
+                    p = strtok(data, ",");
+                    if (p != NULL)strcpy(user, p);
+                    p = strtok(data, ",");
+                    if (p != NULL)game = (int) strtol(p, (char **) NULL, 10);
+                    pthread_mutex_lock(&mutex);
+                    sprintf(answer, "9/%d~", sendInvitation(user,game));
+                    pthread_mutex_unlock(&mutex);
+                case 10:
+                    game = (int) strtol(data, (char **) NULL, 10);
+                    pthread_mutex_lock(&mutex);
+                    if(game!=-1)joinGame(conn, (char *) userList.list[pos].userName, game);
+                    refreshGameFlag=1;
+                    pthread_mutex_unlock(&mutex);
+
                 default:
                     //ERROR CODE
                     sprintf(answer, "-1/%d~", code);
@@ -136,24 +164,63 @@ void *connection_handler(void *arg)
             }
             if(code==0){
                 //user is removed we update the list
-                printf("closing user %s\n",userList.list[pos].userName);
+                printf("closing user %s\n",(char *) userList.list[pos].userName);
                 removeUser(&userList, pos);
             }
             //user was added or removed, we update the lists
             if(code==1 || code == 0){
                 for(int j=0; j<userList.num;j++){
+                    pthread_mutex_lock(&mutex);
                     strcpy(answer, "7/");
                     catUsers(&userList,answer);
                     strcat(answer,"~");
-                    printf("sending %s to %s\n",answer,userList.list[j].userName);
+                    printf("sending %s to %s\n",answer,(char *)userList.list[j].userName);
                     write(userList.list[j].socket, answer, strlen(answer));
+                    pthread_mutex_unlock(&mutex);
                 }
 
+            }
+            if(refreshGameFlag){
+                strcpy(answer,"11/");
+                UserList tempList={};
+                pthread_mutex_lock(&mutex);
+                usersFromGame(conn, &tempList, game);
+                catUsers(&tempList,answer);
+                for(int j=0;j<tempList.num;j++){
+                    int k=0;
+                    int found=0;
+                    while(k<userList.num&&found==0){
+                        if(userList.list[k].userName==tempList.list[j].userName){
+                            found=1;
+                            write(userList.list[k].socket, answer, strlen(answer));
+                        }
+                        k++;
+                    }
+                }
+                refreshGameFlag=0;
             }
         }
     }
     close(sock_conn);
     return NULL;
+}
+
+int sendInvitation(char user[20], int game) {
+    int i=0;
+    u_int8_t found =0;
+    char answer[520]={};
+    while(i<userList.num && found==0){
+        if(strcmp((const char *) userList.list[i].userName, user) == 0){
+            found=1;
+            sprintf(answer,"10/%d",game);
+            write(userList.list[i].socket, answer, strlen(answer));
+        }
+        i++;
+    }
+    if(found==0){
+        return -1;
+    }
+    return 0;
 }
 
 int removeUser(UserList* userList, int pos){

@@ -8,9 +8,10 @@
 #include <mysql.h>
 
 #define NUM_CLIENT 20
+typedef char UserName[20];
 
 typedef struct{
-    char userName[20];
+    UserName userName[20];
     int socket;
 }User;
 
