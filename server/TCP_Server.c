@@ -137,6 +137,7 @@ void *connection_handler(void *arg)
                     if(createGame(conn, (char *) userList.list[pos].userName, &game) == -1)game=-1;
                     pthread_mutex_unlock(&mutex);
                     sprintf(answer, "8/%d~", game);
+                    break;
                 case 9:
                     //INVITE TO GAME 9/user,game
                     p = strtok(data, ",");
@@ -146,12 +147,14 @@ void *connection_handler(void *arg)
                     pthread_mutex_lock(&mutex);
                     sprintf(answer, "9/%d~", sendInvitation(user,game));
                     pthread_mutex_unlock(&mutex);
+                    break;
                 case 10:
                     game = (int) strtol(data, (char **) NULL, 10);
                     pthread_mutex_lock(&mutex);
                     if(game!=-1)joinGame(conn, (char *) userList.list[pos].userName, game);
                     refreshGameFlag=1;
                     pthread_mutex_unlock(&mutex);
+                    break;
 
                 default:
                     //ERROR CODE

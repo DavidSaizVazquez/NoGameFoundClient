@@ -151,7 +151,21 @@ int createGame(MYSQL* conn, char username[20], int *game){
     char consult[512] = {};
     MYSQL_RES *result;
     MYSQL_ROW GameRow;
-    if (sprintf(consult, "INSERT INTO Games() VALUES ();INSERT INTO UsersPerGame(gameid, userid) VALUES ((SELECT LAST_INSERT_ID()),(SELECT Id FROM Users WHERE Username=\'%s\'));SELECT GameId FROM UsersPerGame, Users WHERE UserId=Users.Id AND Username=\'%s\';",username,username) < 0) {
+    if (sprintf(consult, "INSERT INTO Games() VALUES ();") < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    if (sprintf(consult, "INSERT INTO UsersPerGame(gameid, userid) VALUES ((SELECT LAST_INSERT_ID()),(SELECT Id FROM Users WHERE Username=\'%s\'));",username) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    if (sprintf(consult, "SELECT GameId FROM UsersPerGame, Users WHERE UserId=Users.Id AND Username=\'%s\';",username) < 0) {
         return -1;
     } else {
         if (mysql_query(conn, consult) < 0) {

@@ -14,7 +14,7 @@ pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
 int main()
 {
     //config variables
-    int PORT=9999;
+    int PORT=9990;
     //mysql
     char* host="localhost";
     char* user="root";
