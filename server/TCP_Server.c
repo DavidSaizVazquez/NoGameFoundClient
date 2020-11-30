@@ -164,7 +164,7 @@ void *connection_handler(void *arg)
                     //ERROR CODE
                     sprintf(answer, "-1/%d~", code);
             }
-            if (code != 0) {
+            if (code != 0 && code!=10) {
                 printf("Answer: %s\n", answer);
                 // Send answer
                 write(sock_conn, answer, strlen(answer));
@@ -193,18 +193,20 @@ void *connection_handler(void *arg)
                 pthread_mutex_lock(&mutex);
                 usersFromGame(conn, &tempList, game);
                 catUsers(&tempList,answer);
+                strcat(answer, "~");
                 for(int j=0;j<tempList.num;j++){
                     int k=0;
                     int found=0;
                     while(k<userList.num&&found==0){
                         if(strcmp(userList.list[k].userName,tempList.list[j].userName)==0){
                             found=1;
-                            printf("%s\n",answer);
+                            printf("%s to %s on socket %d\n",answer, userList.list[k].userName,userList.list[k].socket);
                             write(userList.list[k].socket, answer, strlen(answer));
                         }
                         k++;
                     }
                 }
+                pthread_mutex_unlock(&mutex);
                 refreshGameFlag=0;
                 pthread_mutex_unlock(&mutex);
             }
@@ -222,8 +224,9 @@ int sendInvitation(char user[20],char sendingUser[20] ,int game) {
         if(strcmp((const char *) userList.list[i].userName, sendingUser) == 0){
             found=1;
             printf("10/%s,%d\n",user,game);
-            sprintf(answer,"10/%s,%d",user,game);
+            sprintf(answer,"10/%s,%d~",user,game);
             write(userList.list[i].socket, answer, strlen(answer));
+            printf(answer,"10/%s,%d\n",user,game);
         }
         i++;
     }
