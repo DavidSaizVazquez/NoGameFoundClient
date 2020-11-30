@@ -18,5 +18,6 @@ int getAge(MYSQL* conn, char username[20], int* ageOutput);
 int createGame(MYSQL* conn, char username[20], int* game);
 int joinGame(MYSQL* conn, char username[20], int game);
 int usersFromGame(MYSQL* conn, UserList *ans, int game);
+int resetSQLTable(MYSQL *conn, char table[20]);
 
 #endif //SERVER_SQL_CONN_H

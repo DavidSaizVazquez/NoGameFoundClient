@@ -138,7 +138,6 @@ void *connection_handler(void *arg)
                     // CREATE GAME 8/user,game
                     pthread_mutex_lock(&mutex);
                     if(createGame(conn, (char *) userList.list[pos].userName, &game) == -1)game=-1;
-                    refreshGameFlag=1;
                     pthread_mutex_unlock(&mutex);
                     sprintf(answer, "8/%d~", game);
                     break;
@@ -149,7 +148,8 @@ void *connection_handler(void *arg)
                     p = strtok(NULL, ",");
                     if (p != NULL)game = (int) strtol(p, (char **) NULL, 10);
                     pthread_mutex_lock(&mutex);
-                    sprintf(answer, "9/%d~", sendInvitation(user,sendingUser,game));
+                    i=sendInvitation(user,sendingUser,game);
+                    sprintf(answer, "9/%d~",i);
                     pthread_mutex_unlock(&mutex);
                     break;
                 case 10:
@@ -199,7 +199,7 @@ void *connection_handler(void *arg)
                     while(k<userList.num&&found==0){
                         if(strcmp(userList.list[k].userName,tempList.list[j].userName)==0){
                             found=1;
-
+                            printf("%s\n",answer);
                             write(userList.list[k].socket, answer, strlen(answer));
                         }
                         k++;
@@ -221,7 +221,7 @@ int sendInvitation(char user[20],char sendingUser[20] ,int game) {
     while(i<userList.num && found==0){
         if(strcmp((const char *) userList.list[i].userName, sendingUser) == 0){
             found=1;
-            printf("10/%s,%d",user,game);
+            printf("10/%s,%d\n",user,game);
             sprintf(answer,"10/%s,%d",user,game);
             write(userList.list[i].socket, answer, strlen(answer));
         }

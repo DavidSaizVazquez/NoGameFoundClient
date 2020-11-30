@@ -214,5 +214,16 @@ int usersFromGame(MYSQL* conn, UserList *ans, int game){
     ans->num=i;
     return 0;
 }
+int resetSQLTable(MYSQL *conn, char table[20]) {
+    char consult[512]={};
+    if (sprintf(consult, "TRUNCATE %s;",table) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    return 0;
+}
 
 
