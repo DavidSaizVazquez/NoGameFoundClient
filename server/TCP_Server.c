@@ -49,8 +49,9 @@ void *connection_handler(void *arg)
                 break;
             }
             char data[512] = {};
-            strcpy(data, p + 2);
             int code = (int) strtol(p, (char **) NULL, 10);
+            strcpy(data, p + 2+((int)code/10));
+
             switch (code) {
                 case 0:
                     stop = 1;
@@ -145,7 +146,7 @@ void *connection_handler(void *arg)
                     //INVITE TO GAME 9/user,game
                     p = strtok(data, ",");
                     if (p != NULL)strcpy(sendingUser, p);
-                    p = strtok(data, ",");
+                    p = strtok(NULL, ",");
                     if (p != NULL)game = (int) strtol(p, (char **) NULL, 10);
                     pthread_mutex_lock(&mutex);
                     sprintf(answer, "9/%d~", sendInvitation(user,sendingUser,game));
@@ -196,8 +197,9 @@ void *connection_handler(void *arg)
                     int k=0;
                     int found=0;
                     while(k<userList.num&&found==0){
-                        if(userList.list[k].userName==tempList.list[j].userName){
+                        if(strcmp(userList.list[k].userName,tempList.list[j].userName)==0){
                             found=1;
+
                             write(userList.list[k].socket, answer, strlen(answer));
                         }
                         k++;
@@ -219,6 +221,7 @@ int sendInvitation(char user[20],char sendingUser[20] ,int game) {
     while(i<userList.num && found==0){
         if(strcmp((const char *) userList.list[i].userName, sendingUser) == 0){
             found=1;
+            printf("10/%s,%d",user,game);
             sprintf(answer,"10/%s,%d",user,game);
             write(userList.list[i].socket, answer, strlen(answer));
         }

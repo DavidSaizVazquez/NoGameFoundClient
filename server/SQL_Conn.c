@@ -209,7 +209,9 @@ int usersFromGame(MYSQL* conn, UserList *ans, int game){
     while(userRow!=NULL){
         strcat((char *) ans->list[i].userName, userRow[0]);
         userRow = mysql_fetch_row(result);
+        i++;
     }
+    ans->num=i;
     return 0;
 }
 
