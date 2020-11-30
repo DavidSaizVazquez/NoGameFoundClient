@@ -10,7 +10,7 @@ extern UserList userList;
 extern pthread_mutex_t mutex;
 
 
-int sendInvitation(char user[20], int game);
+
 
 void *connection_handler(void *arg)
 {
@@ -21,6 +21,7 @@ void *connection_handler(void *arg)
     char petition[512] = {};
     char answer[512] = {};
     char user[20] = {};
+    char sendingUser[20] = {};
     char password[20] = {};
     int age = 33;
     char mail[20] = {};
@@ -143,11 +144,11 @@ void *connection_handler(void *arg)
                 case 9:
                     //INVITE TO GAME 9/user,game
                     p = strtok(data, ",");
-                    if (p != NULL)strcpy(user, p);
+                    if (p != NULL)strcpy(sendingUser, p);
                     p = strtok(data, ",");
                     if (p != NULL)game = (int) strtol(p, (char **) NULL, 10);
                     pthread_mutex_lock(&mutex);
-                    sprintf(answer, "9/%d~", sendInvitation(user,game));
+                    sprintf(answer, "9/%d~", sendInvitation(user,sendingUser,game));
                     pthread_mutex_unlock(&mutex);
                     break;
                 case 10:
@@ -185,7 +186,7 @@ void *connection_handler(void *arg)
                 }
 
             }
-            if(refreshGameFlag){
+            if(refreshGameFlag==1){
                 strcpy(answer,"11/");
                 UserList tempList={};
                 pthread_mutex_lock(&mutex);
@@ -203,6 +204,7 @@ void *connection_handler(void *arg)
                     }
                 }
                 refreshGameFlag=0;
+                pthread_mutex_unlock(&mutex);
             }
         }
     }
@@ -210,14 +212,14 @@ void *connection_handler(void *arg)
     return NULL;
 }
 
-int sendInvitation(char user[20], int game) {
+int sendInvitation(char user[20],char sendingUser[20] ,int game) {
     int i=0;
     u_int8_t found =0;
     char answer[520]={};
     while(i<userList.num && found==0){
-        if(strcmp((const char *) userList.list[i].userName, user) == 0){
+        if(strcmp((const char *) userList.list[i].userName, sendingUser) == 0){
             found=1;
-            sprintf(answer,"10/%d",game);
+            sprintf(answer,"10/%s,%d",user,game);
             write(userList.list[i].socket, answer, strlen(answer));
         }
         i++;

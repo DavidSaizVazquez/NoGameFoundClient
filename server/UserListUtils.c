@@ -6,7 +6,7 @@
 
 int catUsers(UserList *userList, char * str){
     for (int i = 0; i < userList->num; i++) {
-        strcat(str, userList->list[i].userName);
+        strcat(str, (char*) userList->list[i].userName);
         strcat(str, ",");
     }
     return 0;

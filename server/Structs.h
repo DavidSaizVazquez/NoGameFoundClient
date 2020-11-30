@@ -11,7 +11,7 @@
 typedef char UserName[20];
 
 typedef struct{
-    UserName userName[20];
+    UserName userName;
     int socket;
 }User;
 
