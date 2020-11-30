@@ -19,6 +19,6 @@
 void *connection_handler(void *arg);
 void listener(int sock_listen);
 int startTCPServer(struct sockaddr_in *serv_adr, int *sock_listen, int PORT);
-int removeUser(UserList* userList, int pos);
+int removeUser(UserList* list, int pos);
 #endif //SERVER_TCP_SERVER_H
 

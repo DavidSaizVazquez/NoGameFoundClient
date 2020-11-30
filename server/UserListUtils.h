@@ -9,7 +9,7 @@
 
 
 int catUsers(UserList *userList, char * str);
-
+int findUser(UserList *userList, char username[20]);
 
 
 #endif //SERVER_USERLISTUTILS_H

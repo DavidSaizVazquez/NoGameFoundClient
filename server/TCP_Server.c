@@ -61,7 +61,8 @@ void *connection_handler(void *arg)
                     p = strtok(NULL, ",");
                     if (p != NULL)strcpy(password, p);
                     pthread_mutex_lock(&mutex);
-                    login = loginUser(conn, user, password);
+                    if(findUser(&userList,user)==-1)login = loginUser(conn, user, password);
+                    else login=-1;
                     sprintf(answer, "1/%d~", login);
                     if (login == 0) {
                         strcpy((char *) userList.list[pos].userName, user);
@@ -135,6 +136,7 @@ void *connection_handler(void *arg)
                     // CREATE GAME 8/user,game
                     pthread_mutex_lock(&mutex);
                     if(createGame(conn, (char *) userList.list[pos].userName, &game) == -1)game=-1;
+                    refreshGameFlag=1;
                     pthread_mutex_unlock(&mutex);
                     sprintf(answer, "8/%d~", game);
                     break;
@@ -226,15 +228,16 @@ int sendInvitation(char user[20], int game) {
     return 0;
 }
 
-int removeUser(UserList* userList, int pos){
-    for(int i=pos; i<(userList->num-1);i++){
-        userList->list[i] = userList->list[i+1];
+int removeUser(UserList* list, int pos){
+    for(int i=pos; i<(list->num - 1); i++){
+        list->list[i] = list->list[i + 1];
     }
-    userList->num=userList->num-1;
+    list->num= list->num - 1;
     return 0;
 }
 
 int startTCPServer(struct sockaddr_in *serv_adr, int *sock_listen, int PORT) {
+    int err;
     if ((*sock_listen = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         printf("Error creating socket\n");
         return -1;
@@ -251,8 +254,10 @@ int startTCPServer(struct sockaddr_in *serv_adr, int *sock_listen, int PORT) {
 
     // establecemos el puerto de escucha
     serv_adr->sin_port = htons(PORT);
-    if (bind(*sock_listen, (struct sockaddr *) serv_adr, sizeof(*serv_adr)) != 0) {
-        printf("Error binding\n");
+    int one = 1;
+    setsockopt(*sock_listen, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
+    if ((err=bind(*sock_listen, (struct sockaddr *) serv_adr, sizeof(*serv_adr))) != 0) {
+        printf("Error binding %d\n",err);
         return -1;
     }
     printf("binding ended\n");
