@@ -22,7 +22,6 @@ int main()
     char * db="GameDB";
 
 
-
     int sock_conn, sock_listen;
     struct sockaddr_in serv_adr;
     char msg[20];
