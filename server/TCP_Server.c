@@ -154,6 +154,7 @@ void *connection_handler(void *arg)
                     pthread_mutex_unlock(&mutex);
                     break;
                 case 10:
+                    p = strtok(NULL, "\0");
                     game = (int) strtol(p, (char **) NULL, 10);
                     pthread_mutex_lock(&mutex);
                     if(game!=-1)joinGame(conn, (char *) userList.list[pos].userName, game);
