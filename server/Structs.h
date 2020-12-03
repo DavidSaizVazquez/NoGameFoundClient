@@ -14,6 +14,10 @@ typedef struct{
     UserName userName;
     int socket;
 }User;
+typedef struct {
+    float x;
+    float y;
+} Position;
 
 typedef struct{
     User list[NUM_CLIENT];

@@ -29,6 +29,8 @@ void *connection_handler(void *arg)
     int game;
     int i = 0;
     int login=0;
+    Position position={};
+    UserList players={};
 
 
     UserName userNames[NUM_CLIENT] = {};
@@ -48,9 +50,7 @@ void *connection_handler(void *arg)
                 stop = 1;
                 break;
             }
-            char data[512] = {};
             int code = (int) strtol(p, (char **) NULL, 10);
-            strcpy(data, p + 2+((int)code/10));
 
             switch (code) {
                 case 0:
@@ -58,7 +58,7 @@ void *connection_handler(void *arg)
                     break;
                 case 1:
                     //LOGIN 1/userName,password -->1/0 good 1/-1 NG
-                    p = strtok(data, ",");
+                    p = strtok(NULL, ",");
                     if (p != NULL)strcpy(user, p);
                     p = strtok(NULL, ",");
                     if (p != NULL)strcpy(password, p);
@@ -74,7 +74,7 @@ void *connection_handler(void *arg)
                     break;
                 case 2:
                     //REGISTER 2/userName,password,age,mail,spam -->1/0 good 1/-1 not good
-                    p = strtok(data, ",");
+                    p = strtok(NULL, ",");
                     if (p != NULL)strcpy(user, p);
                     p = strtok(NULL, ",");
                     if (p != NULL)strcpy(password, p);
@@ -90,7 +90,7 @@ void *connection_handler(void *arg)
                     break;
                 case 3:
                     //GET AGE 3/userName -->2/age
-                    p = strtok(data, ",");
+                    p = strtok(NULL, ",");
                     if (p != NULL)strcpy(user, p);
                     pthread_mutex_lock(&mutex);
                     getAge(conn, user, &age);
@@ -100,7 +100,7 @@ void *connection_handler(void *arg)
 
                 case 4:
                     //GET MAIL 4/userName -->3/mail
-                    p = strtok(data, ",");
+                    p = strtok(NULL, ",");
                     if (p != NULL)strcpy(user, p);
                     pthread_mutex_lock(&mutex);
                     getEmail(conn, user, mail);
@@ -109,7 +109,7 @@ void *connection_handler(void *arg)
                     break;
                 case 5:
                     //CHANGE SPAM 5/userName,newspam -->4/0 changed 4/-1 not changed
-                    p = strtok(data, ",");
+                    p = strtok(NULL, ",");
                     if (p != NULL)strcpy(user, p);
                     p = strtok(NULL, ",");
                     if (p != NULL)spam = (int) strtol(p, (char **) NULL, 10);
@@ -119,7 +119,7 @@ void *connection_handler(void *arg)
                     break;
                 case 6:
                     //GET SPAM 6/userName-->6/1(true) else 6/0
-                    p = strtok(data, ",");
+                    p = strtok(NULL, ",");
                     if (p != NULL)strcpy(user, p);
                     pthread_mutex_lock(&mutex);
                     getSpam(conn, user, &spam);
@@ -143,7 +143,7 @@ void *connection_handler(void *arg)
                     break;
                 case 9:
                     //INVITE TO GAME 9/user,game
-                    p = strtok(data, ",");
+                    p = strtok(NULL, ",");
                     if (p != NULL)strcpy(sendingUser, p);
                     p = strtok(NULL, ",");
                     if (p != NULL)game = (int) strtol(p, (char **) NULL, 10);
@@ -153,13 +153,21 @@ void *connection_handler(void *arg)
                     pthread_mutex_unlock(&mutex);
                     break;
                 case 10:
-                    game = (int) strtol(data, (char **) NULL, 10);
+                    game = (int) strtol(p, (char **) NULL, 10);
                     pthread_mutex_lock(&mutex);
                     if(game!=-1)joinGame(conn, (char *) userList.list[pos].userName, game);
                     refreshGameFlag=1;
                     pthread_mutex_unlock(&mutex);
                     break;
+                case 11:
 
+                case 12:
+                    p = strtok(NULL, "/");
+                    position.x=(float ) strtof(p, (char **) NULL);
+                    p = strtok(NULL, "/");
+                    position.y=(float ) strtof(p, (char **) NULL);
+                    printf("%f,%f\n",position.x,position.y);
+                    break;
                 default:
                     //ERROR CODE
                     sprintf(answer, "-1/%d~", code);
