@@ -139,6 +139,7 @@ void *connection_handler(void *arg)
                     pthread_mutex_lock(&mutex);
                     if(createGame(conn, (char *) userList.list[pos].userName, &game) == -1)game=-1;
                     pthread_mutex_unlock(&mutex);
+                    refreshGameFlag = 1;
                     sprintf(answer, "8/%d~", game);
                     break;
                 case 9:
@@ -159,9 +160,22 @@ void *connection_handler(void *arg)
                     refreshGameFlag=1;
                     pthread_mutex_unlock(&mutex);
                     break;
-                case 11:
+                case 12: //inici partida
+                    p = strtok(NULL,",");
+                    int gameNumber = (int) strtol(p, (char **) NULL, 10);
+                
+                    pthread_mutex_lock(&mutex);
+                    usersFromGame(conn, &players, gameNumber);
+                    strcpy(answer,"12/0~");
+                    for(int k=0; k < players.num; k++){
+                        printf("Sending: %s to %s", answer, players.list[k].userName);
+                        write(players.list[k].socket, answer, strlen(answer));
+                    }
+                    
+                    pthread_mutex_unlock(&mutex);
 
-                case 12:
+                    break;
+                case 22:
                     p = strtok(NULL, "/");
                     position.x=(float ) strtof(p, (char **) NULL);
                     p = strtok(NULL, "/");
@@ -216,7 +230,7 @@ void *connection_handler(void *arg)
                 }
                 pthread_mutex_unlock(&mutex);
                 refreshGameFlag=0;
-                pthread_mutex_unlock(&mutex);
+
             }
         }
     }
