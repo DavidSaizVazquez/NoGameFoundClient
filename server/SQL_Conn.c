@@ -191,7 +191,7 @@ int joinGame(MYSQL* conn, char username[20], int game){
     return 0;
 }
 
-int usersFromGame(MYSQL* conn, UserList *ans, int game){
+int usersFromGame(MYSQL* conn, UserList *ans, UserList *userList, int game){
     char consult[512] = {};
     MYSQL_RES *result;
     MYSQL_ROW userRow;
@@ -208,6 +208,14 @@ int usersFromGame(MYSQL* conn, UserList *ans, int game){
     int i=0;
     while(userRow!=NULL){
         strcat((char *) ans->list[i].userName, userRow[0]);
+        for(int j = 0; j<userList->num;j++)
+        {
+            if(strcmp(userList->list[j].userName, userRow[0])==0)
+            {
+                ans->list[i].socket =userList->list[j].socket;
+                break;
+            }
+        }
         userRow = mysql_fetch_row(result);
         i++;
     }

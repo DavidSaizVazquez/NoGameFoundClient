@@ -51,7 +51,7 @@ void *connection_handler(void *arg)
                 break;
             }
             int code = (int) strtol(p, (char **) NULL, 10);
-
+            char broad[512] ={};
             switch (code) {
                 case 0:
                     stop = 1;
@@ -166,28 +166,36 @@ void *connection_handler(void *arg)
                     int gameNumber = (int) strtol(p, (char **) NULL, 10);
                 
                     pthread_mutex_lock(&mutex);
-                    usersFromGame(conn, &players, gameNumber);
-                    strcpy(answer,"12/0~");
+                    usersFromGame(conn, &players, &userList,gameNumber);
+
+                    strcpy(broad,"12/0~");
                     for(int k=0; k < players.num; k++){
-                        printf("Sending: %s to %s", answer, players.list[k].userName);
-                        write(players.list[k].socket, answer, strlen(answer));
+                        printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                        write(players.list[k].socket, broad, strlen(broad));
                     }
                     
                     pthread_mutex_unlock(&mutex);
 
                     break;
-                case 22:
-                    p = strtok(NULL, "/");
-                    position.x=(float ) strtof(p, (char **) NULL);
-                    p = strtok(NULL, "/");
-                    position.y=(float ) strtof(p, (char **) NULL);
-                    printf("%f,%f\n",position.x,position.y);
+                case 20: //received player's last position, state,...
+                    //mgs format: 20/horitz_motion,jump,roll,crouch,dead,pos_x,pos_y~
+                    p=strtok(NULL,"/");
+                    sprintf(broad,"20/%s,%s~",user,p);
+                    for(int k=0; k < players.num; k++){
+                        if(players.list[k].socket != sock_conn)
+                        {
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            write(players.list[k].socket, broad, strlen(broad));
+                        }
+
+                    }
+
+                sprintf(answer, "-1/%d~", code);
+
+
                     break;
-                default:
-                    //ERROR CODE
-                    sprintf(answer, "-1/%d~", code);
             }
-            if (code != 0 && code!=10) {
+            if (code != 0 && code!=10 && code!=12&&code<19) {
                 printf("Answer: %s\n", answer);
                 // Send answer
                 write(sock_conn, answer, strlen(answer));
@@ -214,7 +222,7 @@ void *connection_handler(void *arg)
                 strcpy(answer,"11/");
                 UserList tempList={};
                 pthread_mutex_lock(&mutex);
-                usersFromGame(conn, &tempList, game);
+                usersFromGame(conn, &tempList, &userList,game);
                 catUsers(&tempList,answer);
                 strcat(answer, "~");
                 for(int j=0;j<tempList.num;j++){
