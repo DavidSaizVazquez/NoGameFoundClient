@@ -164,11 +164,12 @@ void *connection_handler(void *arg)
                 case 12: //inici partida
                     p = strtok(NULL,",");
                     int gameNumber = (int) strtol(p, (char **) NULL, 10);
-                
+                    p = strtok(NULL,",");
                     pthread_mutex_lock(&mutex);
                     usersFromGame(conn, &players, &userList,gameNumber);
 
-                    strcpy(broad,"12/0~");
+
+                    sprintf(broad,"12/0,%s~",p);
                     for(int k=0; k < players.num; k++){
                         printf("Sending: %s to %s\n", broad, players.list[k].userName);
                         write(players.list[k].socket, broad, strlen(broad));
