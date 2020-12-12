@@ -2,9 +2,7 @@
 // Created by tania on 30/10/20.
 //
 
-
 #include "TCP_Server.h"
-
 extern MYSQL * conn;
 extern UserList userList;
 extern pthread_mutex_t mutex;
@@ -41,9 +39,8 @@ void *connection_handler(void *arg)
         if (ret < 0) {
             printf("no data in buffer\n");
         } else {
-            printf("received\n");
             petition[ret] = '\0';
-            printf("Petition: %s\n", petition);
+            //printf("Petition: %s\n", petition);
             char *p = strtok(petition, "/");
             if (p == NULL) {
                 printf("not formated message, closing\n");
@@ -159,6 +156,7 @@ void *connection_handler(void *arg)
                     sprintf(answer, "9/%d~",i);
                     pthread_mutex_unlock(&mutex);
                     break;
+
                 case 10:
                     p = strtok(NULL, "\0");
                     game = (int) strtol(p, (char **) NULL, 10);
@@ -167,21 +165,23 @@ void *connection_handler(void *arg)
                     refreshGameFlag=1;
                     pthread_mutex_unlock(&mutex);
                     break;
+
                 case 12: //inici partida
                     p = strtok(NULL,",");
                     int gameNumber = (int) strtol(p, (char **) NULL, 10);
                     p = strtok(NULL,",");
                     pthread_mutex_lock(&mutex);
                     usersFromGame(conn, &players, &userList,gameNumber);
-
-
                     sprintf(broad,"12/0,%s~",p);
                     for(int k=0; k < players.num; k++){
                         printf("Sending: %s to %s\n", broad, players.list[k].userName);
                         write(players.list[k].socket, broad, strlen(broad));
                     }
-                    
                     pthread_mutex_unlock(&mutex);
+
+                case 13:
+                    usersFromGame(conn, &players, &userList,game);
+                    break;
 
                 case 14:
                     //JOIN GAME 14/game
@@ -212,12 +212,12 @@ void *connection_handler(void *arg)
 
                     break;
 
-
                     break;
+
                 case 20: //received player's last position, state,...
                     //mgs format: 20/horitz_motion,jump,roll,crouch,dead,pos_x,pos_y~
-                    p=strtok(NULL,"/");
-                    sprintf(broad,"20/%s,%s~",user,p);
+                    p=strtok(NULL,"~");
+                    sprintf(broad,"20/%s/%s~",user,p);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -228,11 +228,9 @@ void *connection_handler(void *arg)
                     }
 
                 sprintf(answer, "-1/%d~", code);
-
-
                     break;
             }
-            if (code != 0 && code!=10 && code!=12&&code<19) {
+            if (code != 0 && code!=10 && code!=12 && code!=13 &&code<19) {
                 printf("Answer: %s\n", answer);
                 // Send answer
                 write(sock_conn, answer, strlen(answer));
