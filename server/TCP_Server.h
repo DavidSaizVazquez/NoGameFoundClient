@@ -21,5 +21,6 @@ void listener(int sock_listen);
 int startTCPServer(struct sockaddr_in *serv_adr, int *sock_listen, int PORT);
 int removeUser(UserList* list, int pos);
 int sendInvitation(char user[20],char sendingUser[20], int game);
+int sendAllStartingGames();
 #endif //SERVER_TCP_SERVER_H
 

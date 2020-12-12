@@ -69,8 +69,11 @@ void *connection_handler(void *arg)
                     if (login == 0) {
                         strcpy((char *) userList.list[pos].userName, user);
                         userList.num++;
+                        sendAllStartingGames();
                     }
+
                     pthread_mutex_unlock(&mutex);
+
                     break;
                 case 2:
                     //REGISTER 2/userName,password,age,mail,spam -->1/0 good 1/-1 not good
@@ -138,10 +141,13 @@ void *connection_handler(void *arg)
                     // CREATE GAME 8/user,game
                     pthread_mutex_lock(&mutex);
                     if(createGame(conn, (char *) userList.list[pos].userName, &game) == -1)game=-1;
+                    sendAllStartingGames();
                     pthread_mutex_unlock(&mutex);
                     refreshGameFlag = 1;
                     sprintf(answer, "8/%d~", game);
+
                     break;
+
                 case 9:
                     //INVITE TO GAME 9/user,game
                     p = strtok(NULL, ",");
@@ -176,6 +182,36 @@ void *connection_handler(void *arg)
                     }
                     
                     pthread_mutex_unlock(&mutex);
+
+                case 14:
+                    //JOIN GAME 14/game
+                    p = strtok(NULL, ",");
+
+                    game = (int) strtol(p, (char **) NULL, 10);
+                    pthread_mutex_lock(&mutex);
+                    if(game!=-1){
+                        joinGame(conn, (char *) userList.list[pos].userName, game);
+                        sprintf(answer, "14/0~");
+                    } else{
+                        sprintf(answer, "14/-1~");
+                    }
+
+                case 15: //exit game (15/0)
+
+                    if(exitGame(conn,user,game)==0){
+                        sprintf(answer, "15/0~");
+                    } else {
+                        sprintf(answer, "15/-1~");
+                    }
+
+                    pthread_mutex_lock(&mutex);
+                    usersFromGame(conn, &players, &userList,gameNumber);
+                    pthread_mutex_unlock(&mutex);
+                    refreshGameFlag = 1;
+
+
+                    break;
+
 
                     break;
                 case 20: //received player's last position, state,...
@@ -244,6 +280,7 @@ void *connection_handler(void *arg)
             }
         }
     }
+    exitGame(conn,user,game);
     close(sock_conn);
     return NULL;
 }
@@ -266,6 +303,19 @@ int sendInvitation(char user[20],char sendingUser[20] ,int game) {
         return -1;
     }
     return 0;
+}
+
+int sendAllStartingGames(){
+    char msg[512] = {};
+    strcpy(msg,"13/");
+    ongoingGames(conn,msg);
+    strcat(msg,"~");
+
+    printf("Sending command 13: %s\n",msg);
+
+    for(int i=0; i<userList.num; i++){
+        write(userList.list[i].socket, msg, strlen(msg));
+    }
 }
 
 int removeUser(UserList* list, int pos){

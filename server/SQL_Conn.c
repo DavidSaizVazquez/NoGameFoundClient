@@ -191,6 +191,18 @@ int joinGame(MYSQL* conn, char username[20], int game){
     return 0;
 }
 
+int exitGame(MYSQL* conn, char username[20], int game){
+    char consult[120] = {};
+    if (sprintf(consult, "DELETE FROM UsersPerGame WHERE (GameId = %d AND UserId =(SELECT Id FROM Users WHERE Username=\'%s\'));", game, username) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    return 0;
+}
+
 int usersFromGame(MYSQL* conn, UserList *ans, UserList *userList, int game){
     char consult[512] = {};
     MYSQL_RES *result;
@@ -221,6 +233,32 @@ int usersFromGame(MYSQL* conn, UserList *ans, UserList *userList, int game){
     }
     ans->num=i;
     return 0;
+}
+
+int ongoingGames(MYSQL* conn, char games[512]){
+    char consult[512] = {};
+    MYSQL_RES *result;
+    MYSQL_ROW row;
+    if (sprintf(consult, "SELECT GameId FROM UsersPerGame") < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    result = mysql_store_result(conn);
+    row = mysql_fetch_row(result);
+    if (row == NULL)return -1;
+
+    while(row != NULL){
+
+        strcat(games,row[0]);
+        strcat(games,",");
+
+        row = mysql_fetch_row(result);
+    }
+    return 0;
+
 }
 int resetSQLTable(MYSQL *conn, char table[20]) {
     char consult[512]={};
