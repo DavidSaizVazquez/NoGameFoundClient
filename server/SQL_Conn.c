@@ -13,7 +13,15 @@
 #include "mysql.h"
 
 
-
+/***
+ * starts a MySQL connection
+ * @param conn MySQL connection
+ * @param host host of the connection
+ * @param user user of the connection
+ * @param passw password of the connection
+ * @param db database to connect to
+ * @return -1 if any error happens, 0 elsewise
+ */
 int initMySQLServer(MYSQL **conn,char* host, char* user, char* passw, char* db) {
     //Creamos una conexion al servidor MYSQL
     *conn = mysql_init(NULL);
@@ -35,6 +43,13 @@ int initMySQLServer(MYSQL **conn,char* host, char* user, char* passw, char* db) 
     return 0;
 }
 
+/***
+ * Checks if a user exists and log him in if the password is correct.
+ * @param conn MySQL connection
+ * @param username username of the user
+ * @param password password of the user
+ * @return 0 if the user is able to login -1 if any error happens or if the login is incorrect
+ */
 int loginUser(MYSQL *conn, char username[20], char password[20]) {
     char consult[120] = {};
     MYSQL_RES *result;
@@ -53,7 +68,16 @@ int loginUser(MYSQL *conn, char username[20], char password[20]) {
     if (strcmp(Pwd[0], password) == 0) return 0;
     return -1;
 }
-
+/***
+ * registers a user in the database
+ * @param conn MySQL connection
+ * @param username new user's username
+ * @param password new user's password
+ * @param age new user's age
+ * @param mail new user's mail
+ * @param spam new user's spamvalue
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int addUser(MYSQL *conn, char username[20], char password[20], int age, char mail[20], int spam) {
     char consult[120] = {};
     MYSQL_RES *result;
@@ -81,6 +105,13 @@ int addUser(MYSQL *conn, char username[20], char password[20], int age, char mai
 
 }
 
+/***
+ * get's the email of a user from the database
+ * @param conn MySQL connection
+ * @param username username of the user
+ * @param mailOutput output where the mail is copied
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int getEmail(MYSQL *conn, char username[20], char mailOutput[20]) {
     char consult[120] = {};
     MYSQL_RES *result;
@@ -99,6 +130,13 @@ int getEmail(MYSQL *conn, char username[20], char mailOutput[20]) {
     return 0;
 }
 
+/***
+ * changes the value of spam to a new one
+ * @param conn MySQL connection
+ * @param username username of the user
+ * @param spam new spam value
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int setSpam(MYSQL *conn, char username[20], int spam) {
     char consult[120] = {};
     if (sprintf(consult, "Update Users SET spam=\'%d\' WHERE (Username = \'%s\');", spam, username) < 0) {
@@ -111,6 +149,13 @@ int setSpam(MYSQL *conn, char username[20], int spam) {
     return 0;
 }
 
+/**
+ * get the current spam of a user
+ * @param conn MySQL connection
+ * @param username username of the user
+ * @param spam value where the current spam is set
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int getSpam(MYSQL *conn, char username[20], int *spam) {
     char consult[120] = {};
     MYSQL_RES *result;
@@ -129,6 +174,13 @@ int getSpam(MYSQL *conn, char username[20], int *spam) {
     return 0;
 }
 
+/**
+ * get the age of a user from the database
+ * @param conn MySQL connection
+ * @param username username of the user
+ * @param ageOutput vale where the current age is set
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int getAge(MYSQL *conn, char username[20], int *ageOutput) {
     char consult[120] = {};
     MYSQL_RES *result;
@@ -146,7 +198,13 @@ int getAge(MYSQL *conn, char username[20], int *ageOutput) {
     *ageOutput = (int) strtol(Age[0], (char **) NULL, 10);
     return 0;
 }
-
+/**
+ * function that creates a game in the database
+ * @param conn MySQL connection
+ * @param username username of the user
+ * @param game value where the game id is set
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int createGame(MYSQL* conn, char username[20], int *game){
     char consult[512] = {};
     MYSQL_RES *result;
@@ -178,7 +236,13 @@ int createGame(MYSQL* conn, char username[20], int *game){
     *game = (int) strtol(GameRow[0], (char **) NULL, 10);
     return 0;
 }
-
+/**
+ * set's in the database that a player joined a game
+ * @param conn MySQL connection
+ * @param username username of the user
+ * @param game game to join
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int joinGame(MYSQL* conn, char username[20], int game){
     char consult[120] = {};
     if (sprintf(consult, "INSERT INTO UsersPerGame(gameid, userid) VALUES (%d,(SELECT Id FROM Users WHERE Username=\'%s\'));", game, username) < 0) {
@@ -191,6 +255,13 @@ int joinGame(MYSQL* conn, char username[20], int game){
     return 0;
 }
 
+/**
+ * deletes a player from a game
+ * @param conn  MySQL connection
+ * @param username username of the user
+ * @param game game where the user is deleted
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int exitGame(MYSQL* conn, char username[20], int game){
     char consult[120] = {};
     if (sprintf(consult, "DELETE FROM UsersPerGame WHERE (GameId = %d AND UserId =(SELECT Id FROM Users WHERE Username=\'%s\'));", game, username) < 0) {
@@ -202,7 +273,14 @@ int exitGame(MYSQL* conn, char username[20], int game){
     }
     return 0;
 }
-
+/**
+ * get's all the users of a game
+ * @param conn MySQL connection
+ * @param ans list where the players are dumped
+ * @param userList original list
+ * @param game game of the users
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int usersFromGame(MYSQL* conn, UserList *ans, UserList *userList, int game){
     char consult[512] = {};
     MYSQL_RES *result;
@@ -234,7 +312,12 @@ int usersFromGame(MYSQL* conn, UserList *ans, UserList *userList, int game){
     ans->num=i;
     return 0;
 }
-
+/**
+ * gives a list of all the ongoing games separated by commas
+ * @param conn  MySQL connection
+ * @param games char array where the games are copied to
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int ongoingGames(MYSQL* conn, char games[512]){
     char consult[512] = {};
     MYSQL_RES *result;
@@ -260,6 +343,12 @@ int ongoingGames(MYSQL* conn, char games[512]){
     return 0;
 
 }
+/**
+ * cleans a table of the database
+ * @param conn MySQL connection
+ * @param table tablename to trucate
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int resetSQLTable(MYSQL *conn, char table[20]) {
     char consult[512]={};
     if (sprintf(consult, "TRUNCATE %s;",table) < 0) {

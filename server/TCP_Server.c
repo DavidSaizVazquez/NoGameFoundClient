@@ -9,7 +9,11 @@ extern pthread_mutex_t mutex;
 
 
 
-
+/***
+ * Connection handler is the function executed in a thread to regulate the server access of a given channel
+ * @param arg: position in the userList global object.
+ * @return void
+ */
 void *connection_handler(void *arg)
 {
     int stop = 0;
@@ -180,6 +184,7 @@ void *connection_handler(void *arg)
                     pthread_mutex_unlock(&mutex);
 
                 case 13:
+                    //UPDATE LIST 13/--> no return
                     usersFromGame(conn, &players, &userList,game);
                     break;
 
@@ -215,7 +220,7 @@ void *connection_handler(void *arg)
                     break;
 
                 case 20: //received player's last position, state,...
-                    //mgs format: 20/horitz_motion,jump,roll,crouch,dead,pos_x,pos_y~
+                    //mgs format: 20/pos_x,pos_y,state,looking dir(-1,1,0)~
                     p=strtok(NULL,"~");
                     sprintf(broad,"20/%s/%s~",user,p);
                     for(int k=0; k < players.num; k++){
@@ -226,8 +231,7 @@ void *connection_handler(void *arg)
                         }
 
                     }
-
-                sprintf(answer, "-1/%d~", code);
+                    sprintf(answer, "-1/%d~", code);
                     break;
             }
             if (code != 0 && code!=10 && code!=12 && code!=13 &&code<19) {
@@ -283,6 +287,13 @@ void *connection_handler(void *arg)
     return NULL;
 }
 
+/***
+ * Sends a message inviting the user to the game
+ * @param user user to send the message
+ * @param sendingUser user that sends the message
+ * @param game game the player is being invited
+ * @return -1 if not found 0 if found
+ */
 int sendInvitation(char user[20],char sendingUser[20] ,int game) {
     int i=0;
     u_int8_t found =0;
@@ -302,7 +313,10 @@ int sendInvitation(char user[20],char sendingUser[20] ,int game) {
     }
     return 0;
 }
-
+/***
+ * sends to the user all possible games to play
+ * @return 0, error handling not implemented in this function
+ */
 int sendAllStartingGames(){
     char msg[512] = {};
     strcpy(msg,"13/");
@@ -314,8 +328,14 @@ int sendAllStartingGames(){
     for(int i=0; i<userList.num; i++){
         write(userList.list[i].socket, msg, strlen(msg));
     }
+    return 0;
 }
-
+/***
+ * searches for a user and removes it from the list
+ * @param list list to remove it from
+ * @param pos postion of the removing item
+ * @return 0 if it works
+ */
 int removeUser(UserList* list, int pos){
     for(int i=pos; i<(list->num - 1); i++){
         list->list[i] = list->list[i + 1];
@@ -323,7 +343,13 @@ int removeUser(UserList* list, int pos){
     list->num= list->num - 1;
     return 0;
 }
-
+/***
+ * Starts the TCP Server
+ * @param serv_adr address of the server
+ * @param sock_listen socket where the connection is created
+ * @param PORT port of the connection
+ * @return  -1 if any error happened, 0 elsewise
+ */
 int startTCPServer(struct sockaddr_in *serv_adr, int *sock_listen, int PORT) {
     int err;
     if ((*sock_listen = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
