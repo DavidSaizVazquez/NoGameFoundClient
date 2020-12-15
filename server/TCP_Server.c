@@ -184,6 +184,7 @@ void *connection_handler(void *arg)
                     pthread_mutex_unlock(&mutex);
                     break;
 
+
                 case 13:
                     //UPDATE LIST 13/--> no return
                     usersFromGame(conn, &players, &userList,game);
