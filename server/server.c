@@ -18,7 +18,7 @@ int main()
     //mysql
     char* host="localhost";
     char* user="root";
-    char* passw="admin";
+    char* passw="";
     char* db="GameDB";
 
 

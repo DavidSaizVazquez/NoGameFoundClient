@@ -182,6 +182,7 @@ void *connection_handler(void *arg)
                         write(players.list[k].socket, broad, strlen(broad));
                     }
                     pthread_mutex_unlock(&mutex);
+                    break;
 
                 case 13:
                     //UPDATE LIST 13/--> no return
@@ -193,13 +194,17 @@ void *connection_handler(void *arg)
                     p = strtok(NULL, ",");
 
                     game = (int) strtol(p, (char **) NULL, 10);
-                    pthread_mutex_lock(&mutex);
+
                     if(game!=-1){
+                        pthread_mutex_lock(&mutex);
                         joinGame(conn, (char *) userList.list[pos].userName, game);
+                        pthread_mutex_unlock(&mutex);
                         sprintf(answer, "14/0~");
+                        refreshGameFlag=1;
                     } else{
                         sprintf(answer, "14/-1~");
                     }
+                    break;
 
                 case 15: //exit game (15/0)
 
@@ -217,7 +222,7 @@ void *connection_handler(void *arg)
 
                     break;
 
-                    break;
+
 
                 case 20: //received player's last position, state,...
                     //mgs format: 20/pos_x,pos_y,state,looking dir(-1,1,0)~
