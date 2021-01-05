@@ -224,6 +224,16 @@ void *connection_handler(void *arg)
 
 
                     break;
+                case 16: //scoreboard data
+                    //received 16/0
+                    //sent 16/id-player1*player2*-score,id-player2*player3*player4*-score,...~ to only one player
+                    p = strtok(NULL, "\0");
+                    pthread_mutex_lock(&mutex);
+                    strcpy(answer,"16/");
+                    if(finishedGames(conn,answer)<0)strcpy(answer,"-1");
+                    strcat(answer,"~");
+                    pthread_mutex_unlock(&mutex);
+                    break;
 
 
 

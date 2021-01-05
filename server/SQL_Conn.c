@@ -370,7 +370,8 @@ int ongoingGames(MYSQL* conn, char games[512]){
 }
 
 /**
- * gives a string with all the finisihed games, it's players and their scores following the next formula id-player1*player2*-score,id-player2*player3*player4*-score,...
+ * gives a string with all the finisihed games, it's players and their scores
+ * following the next formula id-player1*player2*-score,id-player2*player3*player4*-score,...
  * @param conn
  * @param games
  * @return
@@ -379,7 +380,7 @@ int finishedGames(MYSQL* conn, char games[512]){
     char consult[512] = {};
     MYSQL_RES *result;
     MYSQL_ROW row;
-    if (sprintf(consult, "SELECT DISTINCT Games.Id,Games.Players,Games.Count FROM Games WHERE Games.Id NOT IN (SELECT GameId FROM UsersPerGame);") < 0) {
+    if (sprintf(consult, "SELECT DISTINCT Games.Id,Games.Players,Games.Score FROM Games WHERE Games.Id NOT IN (SELECT GameId FROM UsersPerGame) ORDER BY Games.Score DESC;") < 0) {
         return -1;
     } else {
         if (mysql_query(conn, consult) < 0) {
