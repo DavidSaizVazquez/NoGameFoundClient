@@ -239,6 +239,35 @@ void *connection_handler(void *arg)
                     }
                     sprintf(answer, "-1/%d~", code);
                     break;
+                case 21: // generate bullet at position x
+                // msg: 21/x,y,vx,vy
+                    p=strtok(NULL,"~");
+                    sprintf(broad,"21/%s/%s~",user,p);
+                    for(int k=0; k < players.num; k++){
+                        if(players.list[k].socket != sock_conn)
+                        {
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            write(players.list[k].socket, broad, strlen(broad));
+                        }
+
+                    }
+                    sprintf(answer, "-1/%d~", code);
+                    break;
+                case 30:// revive call
+                    //30/-->30/username
+                    p=strtok(NULL,"~");
+                    sprintf(broad,"30/%s/~",user);
+                    for(int k=0; k < players.num; k++){
+                        if(players.list[k].socket != sock_conn)
+                        {
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            write(players.list[k].socket, broad, strlen(broad));
+                        }
+
+                    }
+                    sprintf(answer, "-1/%d~", code);
+                    break;
+
             }
             if (code != 0 && code!=10 && code!=12 && code!=13 &&code<19) {
                 printf("Answer: %s\n", answer);
@@ -380,6 +409,7 @@ int startTCPServer(struct sockaddr_in *serv_adr, int *sock_listen, int PORT) {
         printf("Error binding %d\n",err);
         return -1;
     }
+
     printf("binding ended\n");
 
 

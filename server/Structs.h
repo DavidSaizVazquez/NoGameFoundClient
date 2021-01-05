@@ -11,7 +11,6 @@
 //username definition
 typedef char UserName[20];
 // struct that contains a user
-
 typedef struct{
     UserName userName;
     int socket;

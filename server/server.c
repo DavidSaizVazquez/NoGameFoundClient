@@ -14,11 +14,11 @@ pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
 int main()
 {
     //config variables
-    int PORT=9990;
+    int PORT=50060;
     //mysql
-    char* host="shiva.upc.edu";
+    char* host="localhost";
     char* user="root";
-    char* passw="";
+    char* passw="admin";
     char* db="GameDB";
 
 
