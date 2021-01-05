@@ -181,6 +181,8 @@ void *connection_handler(void *arg)
                         printf("Sending: %s to %s\n", broad, players.list[k].userName);
                         write(players.list[k].socket, broad, strlen(broad));
                     }
+                    catUsers(&players,broad,"*");
+                    startGame(conn,broad,gameNumber);
                     pthread_mutex_unlock(&mutex);
                     break;
 
@@ -304,7 +306,7 @@ void *connection_handler(void *arg)
                 for(int j=0; j<userList.num;j++){
                     pthread_mutex_lock(&mutex);
                     strcpy(answer, "7/");
-                    catUsers(&userList,answer);
+                    catUsers(&userList,answer,",");
                     strcat(answer,"~");
                     printf("sending %s to %s\n",answer,(char *)userList.list[j].userName);
                     write(userList.list[j].socket, answer, strlen(answer));
@@ -317,7 +319,7 @@ void *connection_handler(void *arg)
                 UserList tempList={};
                 pthread_mutex_lock(&mutex);
                 usersFromGame(conn, &tempList, &userList,game);
-                catUsers(&tempList,answer);
+                catUsers(&tempList,answer,",");
                 strcat(answer, "~");
                 for(int j=0;j<tempList.num;j++){
                     int k=0;

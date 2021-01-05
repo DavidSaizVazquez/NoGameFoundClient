@@ -39,10 +39,6 @@ int main()
         printf("Error cleaning db");
         exit(1);
     }
-    if(resetSQLTable(conn, "Games") < 0){
-        printf("Error cleaning db");
-        exit(1);
-    }
 
     if (startTCPServer(&serv_adr, &sock_listen, PORT) < 0) {
         printf("Error opening tcp socket");

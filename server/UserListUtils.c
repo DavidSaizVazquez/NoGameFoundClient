@@ -9,10 +9,10 @@
  * @param str string where the concatenated values are set
  * @return -1 if any error happens, 0 if there are no errors
  */
-int catUsers(UserList *userList, char * str){
+int catUsers(UserList *userList, char * str,char* separator){
     for (int i = 0; i < userList->num; i++) {
         strcat(str, (char*) userList->list[i].userName);
-        strcat(str, ",");
+        strcat(str, separator);
     }
     return 0;
 }

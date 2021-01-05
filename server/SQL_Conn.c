@@ -68,6 +68,7 @@ int loginUser(MYSQL *conn, char username[20], char password[20]) {
     if (strcmp(Pwd[0], password) == 0) return 0;
     return -1;
 }
+
 /***
  * registers a user in the database
  * @param conn MySQL connection
@@ -198,6 +199,9 @@ int getAge(MYSQL *conn, char username[20], int *ageOutput) {
     *ageOutput = (int) strtol(Age[0], (char **) NULL, 10);
     return 0;
 }
+
+
+//GAME SQL COMMANDS
 /**
  * function that creates a game in the database
  * @param conn MySQL connection
@@ -236,6 +240,7 @@ int createGame(MYSQL* conn, char username[20], int *game){
     *game = (int) strtol(GameRow[0], (char **) NULL, 10);
     return 0;
 }
+
 /**
  * set's in the database that a player joined a game
  * @param conn MySQL connection
@@ -246,6 +251,24 @@ int createGame(MYSQL* conn, char username[20], int *game){
 int joinGame(MYSQL* conn, char username[20], int game){
     char consult[120] = {};
     if (sprintf(consult, "INSERT INTO UsersPerGame(gameid, userid) VALUES (%d,(SELECT Id FROM Users WHERE Username=\'%s\'));", game, username) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    return 0;
+}
+/**
+ * starts a game saving it's players
+ * @param conn MySQL connection
+ * @param players list of players to set
+ * @param game game to be started
+ * @return -1 if any error happens, 0 if there are no errors
+ */
+int startGame(MYSQL* conn, char* players, int game){
+    char consult[512] = {};
+    if (sprintf(consult, "UPDATE Games SET Players=\'%s\' WHERE Games.Id=%d;",players, game) < 0) {
         return -1;
     } else {
         if (mysql_query(conn, consult) < 0) {
@@ -273,6 +296,7 @@ int exitGame(MYSQL* conn, char username[20], int game){
     }
     return 0;
 }
+
 /**
  * get's all the users of a game
  * @param conn MySQL connection
@@ -312,6 +336,7 @@ int usersFromGame(MYSQL* conn, UserList *ans, UserList *userList, int game){
     ans->num=i;
     return 0;
 }
+
 /**
  * gives a list of all the ongoing games separated by commas
  * @param conn  MySQL connection
@@ -343,6 +368,44 @@ int ongoingGames(MYSQL* conn, char games[512]){
     return 0;
 
 }
+
+/**
+ * gives a string with all the finisihed games, it's players and their scores following the next formula id-player1*player2*-score,id-player2*player3*player4*-score,...
+ * @param conn
+ * @param games
+ * @return
+ */
+int finishedGames(MYSQL* conn, char games[512]){
+    char consult[512] = {};
+    MYSQL_RES *result;
+    MYSQL_ROW row;
+    if (sprintf(consult, "SELECT DISTINCT Games.Id,Games.Players,Games.Count FROM Games WHERE Games.Id NOT IN (SELECT GameId FROM UsersPerGame);") < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    result = mysql_store_result(conn);
+    row = mysql_fetch_row(result);
+    if (row == NULL)return -1;
+
+    while(row != NULL){
+
+        if(row[1]==NULL){
+            return -1;
+        }
+        strcat(games,row[0]);
+        strcat(games,"-");
+        strcat(games,row[1]);
+        strcat(games,"-");
+        strcat(games,row[2]);
+        strcat(games,"-,");
+        row = mysql_fetch_row(result);
+    }
+    return 0;
+}
+
 /**
  * cleans a table of the database
  * @param conn MySQL connection

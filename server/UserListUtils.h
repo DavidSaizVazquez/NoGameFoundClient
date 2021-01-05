@@ -8,7 +8,7 @@
 #include "string.h"
 
 
-int catUsers(UserList *userList, char * str);
+int catUsers(UserList *userList, char * str, char* separator);
 int findUser(UserList *userList, char username[20]);
 
 
