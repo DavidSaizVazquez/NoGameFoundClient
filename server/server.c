@@ -16,7 +16,7 @@ int main()
     //config variables
     int PORT=9990;
     //mysql
-    char* host="shiva.upc.edu";
+    char* host="127.0.0.1";
     char* user="root";
     char* passw="";
     char* db="GameDB";
