@@ -134,7 +134,7 @@ void *connection_handler(void *arg)
                     //GET USER LIST -->7/0 returns 7/user1,user2,user3,...,
                     strcpy(answer, "7/");
                     pthread_mutex_lock(&mutex);
-                    catUsers(&userList,answer);
+                    catUsers(&userList,answer,",");
                     strcat(answer,"~");
                     pthread_mutex_unlock(&mutex);
                     break;
