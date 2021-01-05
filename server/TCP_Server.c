@@ -239,17 +239,32 @@ void *connection_handler(void *arg)
                     }
                     sprintf(answer, "-1/%d~", code);
                     break;
-<<<<<<< HEAD
                 case 21: // generate bullet at position x
                 // msg: 21/x,y,vx,vy
                     p=strtok(NULL,"~");
                     sprintf(broad,"21/%s/%s~",user,p);
-=======
-
+                    for(int k=0; k < players.num; k++){
+                        if(players.list[k].socket != sock_conn)
+                        {
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            write(players.list[k].socket, broad, strlen(broad));
+                        }
+                    }
+                    break;
                 case 22: //boss message
                     p=strtok(NULL, "~");
                     sprintf(broad, "22/%s~",p);
->>>>>>> a98740d2222d9f948f01561ddfe83584f26d1478
+                    for(int k=0; k < players.num; k++){
+                        if(players.list[k].socket != sock_conn)
+                        {
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            write(players.list[k].socket, broad, strlen(broad));
+                        }
+                    }
+                    break;
+                case 23:
+                    p=strtok(NULL, "~");
+                    sprintf(broad, "23/%s~",p);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -258,21 +273,11 @@ void *connection_handler(void *arg)
                         }
 
                     }
-<<<<<<< HEAD
                     sprintf(answer, "-1/%d~", code);
                     break;
                 case 30:// revive call
                     //30/-->30/username
-                    p=strtok(NULL,"~");
                     sprintf(broad,"30/%s/~",user);
-=======
-                    break;
-
-                case 23:
-
-                    p=strtok(NULL, "~");
-                    sprintf(broad, "23/%s~",p);
->>>>>>> a98740d2222d9f948f01561ddfe83584f26d1478
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -281,13 +286,7 @@ void *connection_handler(void *arg)
                         }
 
                     }
-<<<<<<< HEAD
-                    sprintf(answer, "-1/%d~", code);
                     break;
-
-=======
-                    break;
->>>>>>> a98740d2222d9f948f01561ddfe83584f26d1478
             }
             if (code != 0 && code!=10 && code!=12 && code!=13 &&code<19) {
                 printf("Answer: %s\n", answer);
