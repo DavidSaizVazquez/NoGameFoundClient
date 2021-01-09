@@ -299,6 +299,17 @@ void *connection_handler(void *arg)
 
                     }
                     break;
+                case 31:
+                    p=strtok(NULL,"~");
+                    sprintf(broad,"31/%s/%s~",user,p);
+                    for(int k=0; k < players.num; k++){
+                        if(players.list[k].socket != sock_conn)
+                        {
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            write(players.list[k].socket, broad, strlen(broad));
+                        }
+                    }
+                    break;
             }
             if (code != 0 && code!=10 && code!=12 && code!=13 &&code<19) {
                 printf("Answer: %s\n", answer);

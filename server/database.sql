@@ -16,7 +16,7 @@ CREATE TABLE Games(
       Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
       Count INT DEFAULT 0,
       Players TEXT,
-      Score FLOAT
+      Score INT
 );
 
 CREATE TABLE UsersPerGame(
@@ -30,7 +30,7 @@ CREATE TABLE UsersPerGame(
 INSERT INTO Users(Username,Pwd,Age, Mail,Spam) VALUES ('a','a',0,'aTotallyRealMail@hello.com',true);
 INSERT INTO Users(Username,Pwd,Age, Mail,Spam) VALUES ('b','b',33,'aTotallyRealMail@hello.com',true);
 
-INSERT INTO Games(Id, Count, Players, Score) VALUES(1,0,'AA',2.3);
+INSERT INTO Games(Id, Count, Players, Score) VALUES(1,0,'p*p*',2.3);
 
 UPDATE Games SET Players='BB' WHERE Games.Id=1;
 
