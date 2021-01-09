@@ -178,6 +178,7 @@ void *connection_handler(void *arg)
                     usersFromGame(conn, &players, &userList,gameNumber);
                     sprintf(broad,"12/0,%s~",p);
                     for(int k=0; k < players.num; k++){
+
                         printf("Sending: %s to %s\n", broad, players.list[k].userName);
                         write(players.list[k].socket, broad, strlen(broad));
                     }
@@ -316,6 +317,7 @@ void *connection_handler(void *arg)
                 case 31:
                     p=strtok(NULL,"~");
                     sprintf(broad,"31/%s/%s~",user,p);
+                    pthread_mutex_lock(&mutex);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -323,6 +325,7 @@ void *connection_handler(void *arg)
                             write(players.list[k].socket, broad, strlen(broad));
                         }
                     }
+                    pthread_mutex_unlock(&mutex);
                     break;
             }
             if (code != 0 && code!=10 && code!=12 && code!=13 &&code<19) {

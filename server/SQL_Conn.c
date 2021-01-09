@@ -317,6 +317,7 @@ int usersFromGame(MYSQL* conn, UserList *ans, UserList *userList, int game){
         }
     }
     result = mysql_store_result(conn);
+    if(result==NULL)return -1;
     userRow = mysql_fetch_row(result);
     if (userRow == NULL)return -1;
     int i=0;
