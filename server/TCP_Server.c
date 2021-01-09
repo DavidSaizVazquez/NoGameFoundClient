@@ -191,7 +191,9 @@ void *connection_handler(void *arg)
 
                 case 13:
                     //UPDATE LIST 13/--> no return
+                    pthread_mutex_lock(&mutex);
                     usersFromGame(conn, &players, &userList,game);
+                    pthread_mutex_unlock(&mutex);
                     break;
 
                 case 14:
@@ -308,6 +310,7 @@ void *connection_handler(void *arg)
                     //send to all the same string
                     p=strtok(NULL, "~");
                     sprintf(broad, "25/%s~",p);
+                    pthread_mutex_lock(&mutex);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -316,6 +319,7 @@ void *connection_handler(void *arg)
                         }
 
                     }
+                    pthread_mutex_unlock(&mutex);
                     sprintf(answer, "-1/%d~", code);
                     break;
 
