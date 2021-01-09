@@ -69,6 +69,8 @@ int loginUser(MYSQL *conn, char username[20], char password[20]) {
     return -1;
 }
 
+
+
 /***
  * registers a user in the database
  * @param conn MySQL connection

@@ -176,9 +176,9 @@ void *connection_handler(void *arg)
                     p = strtok(NULL,",");
                     pthread_mutex_lock(&mutex);
                     usersFromGame(conn, &players, &userList,gameNumber);
-                    sprintf(broad,"12/0,%s~",p);
-                    for(int k=0; k < players.num; k++){
 
+                    for(int k=0; k < players.num; k++){
+                        sprintf(broad,"12/0,%s,%d~",p,k);
                         printf("Sending: %s to %s\n", broad, players.list[k].userName);
                         write(players.list[k].socket, broad, strlen(broad));
                     }
@@ -302,6 +302,22 @@ void *connection_handler(void *arg)
                     }
                     sprintf(answer, "-1/%d~", code);
                     break;
+
+                case 25://25/1,2,...
+                    //send to all the same string
+                    p=strtok(NULL, "~");
+                    sprintf(broad, "25/%s~",p);
+                    for(int k=0; k < players.num; k++){
+                        if(players.list[k].socket != sock_conn)
+                        {
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            write(players.list[k].socket, broad, strlen(broad));
+                        }
+
+                    }
+                    sprintf(answer, "-1/%d~", code);
+                    break;
+
                 case 30:// revive call
                     //30/-->30/username
                     sprintf(broad,"30/%s/~",user);
@@ -432,7 +448,7 @@ int sendAllStartingGames(){
  * @return 0 if it works
  */
 int removeUser(UserList* list, int pos){
-    for(int i=pos; i<(list->num - 1); i++){
+    for(int i=pos; i<(list->num); i++){
         list->list[i] = list->list[i + 1];
     }
     list->num= list->num - 1;
