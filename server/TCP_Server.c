@@ -287,6 +287,20 @@ void *connection_handler(void *arg)
                     }
                     sprintf(answer, "-1/%d~", code);
                     break;
+
+                case 24: //boss died
+                    p=strtok(NULL, "~");
+                    sprintf(broad, "24/%s~",p);
+                    for(int k=0; k < players.num; k++){
+                        if(players.list[k].socket != sock_conn)
+                        {
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            write(players.list[k].socket, broad, strlen(broad));
+                        }
+
+                    }
+                    sprintf(answer, "-1/%d~", code);
+                    break;
                 case 30:// revive call
                     //30/-->30/username
                     sprintf(broad,"30/%s/~",user);
