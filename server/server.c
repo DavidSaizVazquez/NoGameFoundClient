@@ -10,6 +10,7 @@
 UserList userList={};
 MYSQL *conn = NULL;
 pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
+int i;
 
 int main()
 {
@@ -48,7 +49,7 @@ int main()
     }
     // Server end
 
-    int i;
+
     pthread_t threads[NUM_CLIENT];
 
     for (i=0; i<NUM_CLIENT; i++) {

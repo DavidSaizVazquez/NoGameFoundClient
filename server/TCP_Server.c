@@ -6,6 +6,7 @@
 extern MYSQL * conn;
 extern UserList userList;
 extern pthread_mutex_t mutex;
+extern int i;
 
 
 
@@ -29,7 +30,7 @@ void *connection_handler(void *arg)
     char mail[20] = {};
     int spam;
     int game;
-    int i = 0;
+    int l = 0;
     int login=0;
     Position position={};
     UserList players={};
@@ -156,8 +157,8 @@ void *connection_handler(void *arg)
                     p = strtok(NULL, ",");
                     if (p != NULL)game = (int) strtol(p, (char **) NULL, 10);
                     pthread_mutex_lock(&mutex);
-                    i=sendInvitation(user,sendingUser,game);
-                    sprintf(answer, "9/%d~",i);
+                    l=sendInvitation(user, sendingUser, game);
+                    sprintf(answer, "9/%d~", l);
                     pthread_mutex_unlock(&mutex);
                     break;
 
@@ -395,6 +396,7 @@ void *connection_handler(void *arg)
     }
     exitGame(conn,user,game);
     close(sock_conn);
+    i--;
     return NULL;
 }
 
