@@ -248,7 +248,7 @@ void *connection_handler(void *arg)
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
-                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
                             write(players.list[k].socket, broad, strlen(broad));
                         }
 
@@ -273,7 +273,7 @@ void *connection_handler(void *arg)
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
-                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
                             write(players.list[k].socket, broad, strlen(broad));
                         }
                     }
@@ -329,7 +329,7 @@ void *connection_handler(void *arg)
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
-                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
                             write(players.list[k].socket, broad, strlen(broad));
                         }
 
