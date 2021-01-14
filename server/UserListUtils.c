@@ -14,6 +14,7 @@ int catUsers(UserList *userList, char * str,char* separator){
         strcat(str, (char*) userList->list[i].userName);
         strcat(str, separator);
     }
+    str[strlen(str)-1] = '\0';
     return 0;
 }
 /**
@@ -36,4 +37,10 @@ int findUser(UserList *userList, char username[20]){
         return -1;
     }
     return 0;
+}
+char* substr(char* src, int start, int len){
+    char* sub = malloc(sizeof(char)*(len+1));
+    memcpy(sub, &src[start], len);
+    sub[len] = '\0';
+    return sub;
 }

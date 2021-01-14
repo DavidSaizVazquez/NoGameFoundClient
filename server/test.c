@@ -22,14 +22,10 @@ int main()
     } else {
         printf("Mysql opened\n");
     }
-    int game=2;
-    char *games[512];
-    createGame(conn,"jesus",&game);
-    UserList  players={{{"a",2},{"2",3},{"4",5}},3};
-    catUsers(&players,games,"*");
-    startGame(conn,games,game);
+    char *games[512];;
     strcpy(games,"");
-    finishedGames(conn,games);
+    //finishedGames(conn,games);
+    playersPlayedWith(conn, games,"a");
     printf(games);
 
     return 0;

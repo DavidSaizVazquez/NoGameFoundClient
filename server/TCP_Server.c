@@ -183,6 +183,7 @@ void *connection_handler(void *arg)
                         printf("Sending: %s to %s\n", broad, players.list[k].userName);
                         write(players.list[k].socket, broad, strlen(broad));
                     }
+                    strcpy(broad,"");
                     catUsers(&players,broad,"*");
                     startGame(conn,broad,gameNumber);
                     pthread_mutex_unlock(&mutex);
@@ -225,15 +226,22 @@ void *connection_handler(void *arg)
                     usersFromGame(conn, &players, &userList,gameNumber);
                     pthread_mutex_unlock(&mutex);
                     refreshGameFlag = 1;
-
-
                     break;
+
                 case 16: //scoreboard data
                     //received 16/0
                     //sent 16/id-player1*player2*-score,id-player2*player3*player4*-score,...~ to only one player
-                    p = strtok(NULL, "\0");
                     pthread_mutex_lock(&mutex);
                     strcpy(answer,"16/");
+                    if(finishedGames(conn,answer)<0)strcpy(answer,"-1");
+                    strcat(answer,"~");
+                    pthread_mutex_unlock(&mutex);
+                    break;
+
+                case 17:// 17/0
+                    // 17/p1,p2......
+                    pthread_mutex_lock(&mutex);
+                    strcpy(answer,"17/");
                     if(finishedGames(conn,answer)<0)strcpy(answer,"-1");
                     strcat(answer,"~");
                     pthread_mutex_unlock(&mutex);
@@ -278,6 +286,7 @@ void *connection_handler(void *arg)
                         }
                     }
                     break;
+
                 case 23:
                     p=strtok(NULL, "~");
                     sprintf(broad, "23/%s~",p);
@@ -347,6 +356,11 @@ void *connection_handler(void *arg)
                         }
                     }
                     pthread_mutex_unlock(&mutex);
+                    break;
+                case 32:
+                    p=strtok(NULL,"~");
+                    setGameScore(conn,(int) strtol(p, (char **) NULL, 10),game);
+                    exitGame(conn,user,game);
                     break;
             }
             if (code != 0 && code!=10 && code!=12 && code!=13 &&code<19) {
@@ -497,3 +511,4 @@ int startTCPServer(struct sockaddr_in *serv_adr, int *sock_listen, int PORT) {
 
     return 0;
 }
+

@@ -281,6 +281,25 @@ int startGame(MYSQL* conn, char* players, int game){
 }
 
 /**
+ * sets game score
+ * @param conn MySQL connection
+ * @param score score of game
+ * @param game game to be started
+ * @return -1 if any error happens, 0 if there are no errors
+ */
+int setGameScore(MYSQL* conn, int score, int game){
+    char consult[512] = {};
+    if (sprintf(consult, "UPDATE Games SET Score=\'%d\' WHERE Games.Id=%d;",score, game) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    return 0;
+}
+
+/**
  * deletes a player from a game
  * @param conn  MySQL connection
  * @param username username of the user
@@ -407,6 +426,49 @@ int finishedGames(MYSQL* conn, char games[512]){
         strcat(games,"-,");
         row = mysql_fetch_row(result);
     }
+    return 0;
+}
+/**
+ * gives a string with all the finisihed games, it's players and their scores
+ * following the next formula id-player1*player2*-score,id-player2*player3*player4*-score,...
+ * @param conn
+ * @param games
+ * @return
+ */
+int playersPlayedWith(MYSQL* conn, char *players,char * name){
+    char consult[512] = {};
+    MYSQL_RES *result;
+    MYSQL_ROW row;
+    if (sprintf(consult, "SELECT Games.Players FROM Games WHERE Games.Id NOT IN (SELECT GameId FROM UsersPerGame);") < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    result = mysql_store_result(conn);
+    row = mysql_fetch_row(result);
+    if (row == NULL)return -1;
+    while(row != NULL){
+        char *p=strtok(row[0],"*");
+        char list[512]={};
+        int g=0;
+        while (!(p==NULL)){
+            if(strcmp(p,name)==0){
+                g=1;
+            }
+            else{
+                strcat(list,p);
+            }
+            p=strtok(NULL,"*");
+        }
+        if(g==1){
+            strcat(players,list);
+            strcat(players,",");
+        }
+        row = mysql_fetch_row(result);
+    }
+    players[strlen(players)-1]='\0';
     return 0;
 }
 
