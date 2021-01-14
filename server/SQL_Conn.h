@@ -20,9 +20,11 @@ int getAge(MYSQL* conn, char username[20], int* ageOutput);
 int createGame(MYSQL* conn, char username[20], int* game);
 int joinGame(MYSQL* conn, char username[20], int game);
 int startGame(MYSQL* conn, char* players, int game);
+int setGameScore(MYSQL* conn, int score, int game);
 int usersFromGame(MYSQL* conn, UserList *ans, UserList *userList, int game);
 int resetSQLTable(MYSQL *conn, char table[20]);
 int ongoingGames(MYSQL* conn, char games[512]);
 int finishedGames(MYSQL* conn, char games[512]);
+int playersPlayedWith(MYSQL* conn, char *players,char * name);
 int exitGame(MYSQL* conn, char username[20], int game);
 #endif //SERVER_SQL_CONN_H

@@ -52,10 +52,8 @@ void *connection_handler(void *arg)
                 stop = 1;
                 break;
             }
-
             int code = (int) strtol(p, (char **) NULL, 10);
             char broad[512] ={};
-
             switch (code) {
                 case 0:
                     stop = 1;
@@ -241,6 +239,15 @@ void *connection_handler(void *arg)
                     pthread_mutex_unlock(&mutex);
                     break;
 
+                case 17:// 17/0
+                    // 17/p1,p2......
+                    pthread_mutex_lock(&mutex);
+                    strcpy(answer,"17/");
+                    if(playersPlayedWith(conn,answer,user)<0)strcpy(answer,"-1");
+                    strcat(answer,"~");
+                    pthread_mutex_unlock(&mutex);
+                    break;
+
                 case 18: //delete user profile
                     //received 18/0
                     //if success, respond 18/0
@@ -259,11 +266,12 @@ void *connection_handler(void *arg)
 
 
 
+
+
                 case 20: //received player's last position, state,...
                     //mgs format: 20/pos_x,pos_y,state,looking dir(-1,1,0)~
                     p=strtok(NULL,"~");
                     sprintf(broad,"20/%s/%s~",user,p);
-                    pthread_mutex_lock(&mutex);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -272,14 +280,12 @@ void *connection_handler(void *arg)
                         }
 
                     }
-                    pthread_mutex_unlock(&mutex);
                     sprintf(answer, "-1/%d~", code);
                     break;
                 case 21: // generate bullet at position x
                 // msg: 21/x,y,vx,vy
                     p=strtok(NULL,"~");
                     sprintf(broad,"21/%s/%s~",user,p);
-                    pthread_mutex_lock(&mutex);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -287,12 +293,10 @@ void *connection_handler(void *arg)
                             write(players.list[k].socket, broad, strlen(broad));
                         }
                     }
-                    pthread_mutex_unlock(&mutex);
                     break;
                 case 22: //boss message
                     p=strtok(NULL, "~");
                     sprintf(broad, "22/%s~",p);
-                    pthread_mutex_lock(&mutex);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -300,12 +304,10 @@ void *connection_handler(void *arg)
                             write(players.list[k].socket, broad, strlen(broad));
                         }
                     }
-                    pthread_mutex_unlock(&mutex);
                     break;
                 case 23:
                     p=strtok(NULL, "~");
                     sprintf(broad, "23/%s~",p);
-                    pthread_mutex_lock(&mutex);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -314,14 +316,12 @@ void *connection_handler(void *arg)
                         }
 
                     }
-                    pthread_mutex_unlock(&mutex);
                     sprintf(answer, "-1/%d~", code);
                     break;
 
                 case 24: //boss died
                     p=strtok(NULL, "~");
                     sprintf(broad, "24/%s~",p);
-                    pthread_mutex_lock(&mutex);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -330,7 +330,6 @@ void *connection_handler(void *arg)
                         }
 
                     }
-                    pthread_mutex_unlock(&mutex);
                     sprintf(answer, "-1/%d~", code);
                     break;
 
@@ -354,7 +353,6 @@ void *connection_handler(void *arg)
                 case 30:// revive call
                     //30/-->30/username
                     sprintf(broad,"30/%s/~",user);
-                    pthread_mutex_lock(&mutex);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
@@ -363,7 +361,6 @@ void *connection_handler(void *arg)
                         }
 
                     }
-                    pthread_mutex_unlock(&mutex);
                     break;
                 case 31:
                     p=strtok(NULL,"~");
