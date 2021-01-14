@@ -259,8 +259,6 @@ void *connection_handler(void *arg)
                             strcpy(answer, "18/-1~");
                         }
                     }
-
-
                     break;
 
 
