@@ -242,7 +242,7 @@ void *connection_handler(void *arg)
                     // 17/p1,p2......
                     pthread_mutex_lock(&mutex);
                     strcpy(answer,"17/");
-                    if(finishedGames(conn,answer)<0)strcpy(answer,"-1");
+                    if(playersPlayedWith(conn,answer,user)<0)strcpy(answer,"-1");
                     strcat(answer,"~");
                     pthread_mutex_unlock(&mutex);
                     break;

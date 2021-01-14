@@ -459,9 +459,11 @@ int playersPlayedWith(MYSQL* conn, char *players,char * name){
             }
             else{
                 strcat(list,p);
+                strcat(list,",");
             }
             p=strtok(NULL,"*");
         }
+        list[strlen(list)-1]='\0';
         if(g==1){
             strcat(players,list);
             strcat(players,",");
