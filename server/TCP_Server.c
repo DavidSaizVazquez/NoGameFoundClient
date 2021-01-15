@@ -179,7 +179,7 @@ void *connection_handler(void *arg)
                     usersFromGame(conn, &players, &userList,gameNumber);
 
                     for(int k=0; k < players.num; k++){
-                        sprintf(broad,"12/0,%s,%d~",p,k);
+                        sprintf(broad,"12/0,%s,%d~",p,k+1);//TODO change to k
                         printf("Sending: %s to %s\n", broad, players.list[k].userName);
                         write(players.list[k].socket, broad, strlen(broad));
                     }
@@ -293,7 +293,7 @@ void *connection_handler(void *arg)
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
-                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
                             write(players.list[k].socket, broad, strlen(broad));
                         }
 
@@ -302,7 +302,7 @@ void *connection_handler(void *arg)
                     break;
 
                 case 24: //boss died
-                    p=strtok(NULL, "~");
+                    p=strtok(NULL,"~");
                     sprintf(broad, "24/%s~",p);
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
@@ -344,6 +344,17 @@ void *connection_handler(void *arg)
 
                     }
                     break;
+                case 33:// revive call
+                    //30/-->30/username
+                    sprintf(broad,"33/%s/~",user);
+                    for(int k=0; k < players.num; k++){
+                        if(players.list[k].socket != sock_conn)
+                        {
+                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            write(players.list[k].socket, broad, strlen(broad));
+                        }
+                    }
+                    break;
                 case 31:
                     p=strtok(NULL,"~");
                     sprintf(broad,"31/%s/%s~",user,p);
@@ -359,6 +370,7 @@ void *connection_handler(void *arg)
                     break;
                 case 32:
                     p=strtok(NULL,"~");
+                    printf("finished game with puntuation %s",p);
                     setGameScore(conn,(int) strtol(p, (char **) NULL, 10),game);
                     exitGame(conn,user,game);
                     break;

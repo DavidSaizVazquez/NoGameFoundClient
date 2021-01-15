@@ -315,6 +315,13 @@ int exitGame(MYSQL* conn, char username[20], int game){
             return -1;
         }
     }
+    if (sprintf(consult, "DELETE FROM Games WHERE Score IS NULL AND Games.Id NOT IN (SELECT GameId FROM UsersPerGame);") < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
     return 0;
 }
 
@@ -470,7 +477,7 @@ int playersPlayedWith(MYSQL* conn, char *players,char * name){
         }
         row = mysql_fetch_row(result);
     }
-    players[strlen(players)-1]='\0';
+    if(strlen(players)>3)players[strlen(players)-1]='\0';
     return 0;
 }
 
