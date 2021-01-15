@@ -183,7 +183,6 @@ void *connection_handler(void *arg)
                         printf("Sending: %s to %s\n", broad, players.list[k].userName);
                         write(players.list[k].socket, broad, strlen(broad));
                     }
-                    strcpy(broad,"");
                     catUsers(&players,broad,"*");
                     startGame(conn,broad,gameNumber);
                     pthread_mutex_unlock(&mutex);
@@ -226,11 +225,13 @@ void *connection_handler(void *arg)
                     usersFromGame(conn, &players, &userList,gameNumber);
                     pthread_mutex_unlock(&mutex);
                     refreshGameFlag = 1;
-                    break;
 
+
+                    break;
                 case 16: //scoreboard data
                     //received 16/0
                     //sent 16/id-player1*player2*-score,id-player2*player3*player4*-score,...~ to only one player
+                    p = strtok(NULL, "\0");
                     pthread_mutex_lock(&mutex);
                     strcpy(answer,"16/");
                     if(finishedGames(conn,answer)<0)strcpy(answer,"-1");
@@ -247,6 +248,22 @@ void *connection_handler(void *arg)
                     pthread_mutex_unlock(&mutex);
                     break;
 
+                case 18: //delete user profile
+                    //received 18/0
+                    //if success, respond 18/0
+                    if(1){
+                        int res = deleteUser(conn, user);
+                        if(res==0){
+                            strcpy(answer, "18/0~");
+                        } else{
+                            strcpy(answer, "18/-1~");
+                        }
+                    }
+                    break;
+
+
+
+
 
 
                 case 20: //received player's last position, state,...
@@ -256,7 +273,7 @@ void *connection_handler(void *arg)
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
-                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
                             write(players.list[k].socket, broad, strlen(broad));
                         }
 
@@ -281,12 +298,11 @@ void *connection_handler(void *arg)
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
-                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
                             write(players.list[k].socket, broad, strlen(broad));
                         }
                     }
                     break;
-
                 case 23:
                     p=strtok(NULL, "~");
                     sprintf(broad, "23/%s~",p);
@@ -338,7 +354,7 @@ void *connection_handler(void *arg)
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
-                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
                             write(players.list[k].socket, broad, strlen(broad));
                         }
 
@@ -523,4 +539,3 @@ int startTCPServer(struct sockaddr_in *serv_adr, int *sock_listen, int PORT) {
 
     return 0;
 }
-

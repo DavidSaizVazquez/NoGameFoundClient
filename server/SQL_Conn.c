@@ -108,6 +108,27 @@ int addUser(MYSQL *conn, char username[20], char password[20], int age, char mai
 
 }
 
+int deleteUser(struct MYSQL *conn, char username[20]){
+    char consult1[120] = {};
+    char consult2[120] = {};
+    if (sprintf(consult1, "DELETE  FROM  UsersPerGame WHERE (UserId = (SELECT Id FROM Users WHERE Username = \'%s\'));", username) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult1) < 0) {
+            return -1;
+        }
+    }
+    if (sprintf(consult2, "DELETE FROM Users WHERE (Username = \'%s\');", username) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult2) < 0) {
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
 /***
  * get's the email of a user from the database
  * @param conn MySQL connection
