@@ -49,8 +49,7 @@ void *connection_handler(void *arg)
             char *p = strtok(petition, "/");
             if (p == NULL) {
                 printf("not formated message, closing\n");
-                stop = 1;
-                break;
+                p="0";
             }
             int code = (int) strtol(p, (char **) NULL, 10);
             char broad[512] ={};
