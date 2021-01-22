@@ -26,5 +26,6 @@ int resetSQLTable(MYSQL *conn, char table[20]);
 int ongoingGames(MYSQL* conn, char games[512]);
 int finishedGames(MYSQL* conn, char games[512]);
 int playersPlayedWith(MYSQL* conn, char *players,char * name);
+int gamesWithinDates(MYSQL* conn, char games[512],char * sDay, char * fDay);
 int exitGame(MYSQL* conn, char username[20], int game);
 #endif //SERVER_SQL_CONN_H

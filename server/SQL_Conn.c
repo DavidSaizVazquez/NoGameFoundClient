@@ -236,6 +236,7 @@ int createGame(MYSQL* conn, char username[20], int *game){
     char consult[512] = {};
     MYSQL_RES *result;
     MYSQL_ROW GameRow;
+
     if (sprintf(consult, "INSERT INTO Games() VALUES ();") < 0) {
         return -1;
     } else {
@@ -243,6 +244,15 @@ int createGame(MYSQL* conn, char username[20], int *game){
             return -1;
         }
     }
+
+    if (sprintf(consult, "UPDATE Games SET day=current_date() WHERE Games.Id=LAST_INSERT_ID();") < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+
     if (sprintf(consult, "INSERT INTO UsersPerGame(gameid, userid) VALUES ((SELECT LAST_INSERT_ID()),(SELECT Id FROM Users WHERE Username=\'%s\'));",username) < 0) {
         return -1;
     } else {
@@ -250,6 +260,7 @@ int createGame(MYSQL* conn, char username[20], int *game){
             return -1;
         }
     }
+
     if (sprintf(consult, "SELECT GameId FROM UsersPerGame, Users WHERE UserId=Users.Id AND Username=\'%s\';",username) < 0) {
         return -1;
     } else {
@@ -257,6 +268,7 @@ int createGame(MYSQL* conn, char username[20], int *game){
             return -1;
         }
     }
+
     result = mysql_store_result(conn);
     GameRow = mysql_fetch_row(result);
     if (GameRow == NULL)return -1;
@@ -499,6 +511,38 @@ int playersPlayedWith(MYSQL* conn, char *players,char * name){
         row = mysql_fetch_row(result);
     }
     if(strlen(players)>3)players[strlen(players)-1]='\0';
+    return 0;
+}
+
+
+int gamesWithinDates(MYSQL* conn, char games[512],char * sDay, char * fDay){
+    char consult[512] = {};
+    MYSQL_RES *result;
+    MYSQL_ROW row;
+    if (sprintf(consult, "SELECT Games.Id,Games.Players,Games.Score FROM Games WHERE day>=\'%s\' AND day<=\'%s\';",sDay,fDay) < 0) {
+        return -1;
+    } else {
+        if (mysql_query(conn, consult) < 0) {
+            return -1;
+        }
+    }
+    result = mysql_store_result(conn);
+    row = mysql_fetch_row(result);
+    if (row == NULL)return -1;
+
+    while(row != NULL){
+
+        if(row[1]==NULL){
+            return -1;
+        }
+        strcat(games,row[0]);
+        strcat(games,"-");
+        strcat(games,row[1]);
+        strcat(games,"-");
+        strcat(games,row[2]);
+        strcat(games,"-,");
+        row = mysql_fetch_row(result);
+    }
     return 0;
 }
 

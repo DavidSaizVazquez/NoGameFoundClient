@@ -260,6 +260,17 @@ void *connection_handler(void *arg)
                     }
                     break;
 
+                case 19: //19/day/day~
+                    p=strtok(NULL,",");
+                    char *day1 = NULL;
+                    strcpy(day1,p);
+                    strcpy(answer,"19/");
+                    p=strtok(NULL,"~");
+                    pthread_mutex_lock(&mutex);
+                    if(gamesWithinDates(conn,answer,day1,p)<0)strcpy(answer,"-1");
+                    break;
+
+
 
 
 
