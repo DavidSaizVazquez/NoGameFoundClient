@@ -11,7 +11,7 @@ int initMySQLServer(MYSQL **conn,char* host, char* user, char* passw, char* db);
 
 int loginUser(MYSQL *conn, char username[20], char password[20]);
 int addUser(MYSQL *conn, char username[20], char password[20], int age, char mail[20], int spam);
-int deleteUser(struct MYSQL *conn, char username[20]);
+int deleteUser(MYSQL *conn, char username[20]);
 int getEmail(MYSQL* conn, char username[20], char mailOutput[20]);
 int setSpam(MYSQL* conn, char username[20], int spam);
 int getSpam(MYSQL* conn, char username[20], int * spam);

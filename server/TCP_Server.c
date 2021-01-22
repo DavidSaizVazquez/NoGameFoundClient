@@ -34,6 +34,7 @@ void *connection_handler(void *arg)
     int login=0;
     Position position={};
     UserList players={};
+    char day1[] = {};
 
 
     UserName userNames[NUM_CLIENT] = {};
@@ -261,13 +262,13 @@ void *connection_handler(void *arg)
                     break;
 
                 case 19: //19/day/day~
-                    p=strtok(NULL,",");
-                    char *day1 = NULL;
+                    p=strtok(NULL,"/");
                     strcpy(day1,p);
                     strcpy(answer,"19/");
                     p=strtok(NULL,"~");
                     pthread_mutex_lock(&mutex);
-                    if(gamesWithinDates(conn,answer,day1,p)<0)strcpy(answer,"-1");
+                    if(gamesWithinDates(conn,answer,day1,p)<0)strcpy(answer,"19/~");
+                    pthread_mutex_unlock(&mutex);
                     break;
 
 
@@ -401,7 +402,7 @@ void *connection_handler(void *arg)
                     exitGame(conn,user,game);
                     break;
             }
-            if (code != 0 && code!=10 && code!=12 && code!=13 &&code<19) {
+            if (code != 0 && code!=10 && code!=12 && code!=13 &&code<=19) {
                 printf("Answer: %s\n", answer);
                 // Send answer
                 write(sock_conn, answer, strlen(answer));
