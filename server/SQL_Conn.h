@@ -6,6 +6,11 @@
 #define SERVER_SQL_CONN_H
 #include <mysql.h>
 #include "Structs.h"
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "mysql.h"
+
 
 int initMySQLServer(MYSQL **conn,char* host, char* user, char* passw, char* db);
 

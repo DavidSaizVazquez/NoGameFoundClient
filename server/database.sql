@@ -35,8 +35,3 @@ INSERT INTO Games(Id, Players, Score,day) VALUES(2,'p*p',2.3,'2020-1-3');
 INSERT INTO Games(Id, Players, Score,day) VALUES(3,'p*p',2.3,'2020-1-3');
 INSERT INTO Games(Id, Players, Score,day) VALUES(4,'p*p',2.3,'2020-1-3');
 INSERT INTO Games(Id, Players, Score,day) VALUES(5,'p*p',2.3,'2020-1-4');
-INSERT INTO Games() VALUES ();
-UPDATE Games SET day=current_date() WHERE Games.Id=LAST_INSERT_ID();
-SELECT * FROM Games;
-
-SELECT Games.Id,Games.Players,Games.Score FROM Games WHERE day<='2020-1-3' AND day>='2020-1-3';

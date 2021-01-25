@@ -10,7 +10,5 @@
 
 int catUsers(UserList *userList, char * str, char* separator);
 int findUser(UserList *userList, char username[20]);
-char* substr(char* src, int start, int len);
-
 
 #endif //SERVER_USERLISTUTILS_H

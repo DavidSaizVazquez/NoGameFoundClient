@@ -4,14 +4,6 @@
 
 #include "SQL_Conn.h"
 
-#include <string.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <stdio.h>
-#include "mysql.h"
-
 
 /***
  * starts a MySQL connection
@@ -69,9 +61,7 @@ int loginUser(MYSQL *conn, char username[20], char password[20]) {
     return -1;
 }
 
-
-
-/***
+/**
  * registers a user in the database
  * @param conn MySQL connection
  * @param username new user's username
@@ -108,6 +98,12 @@ int addUser(MYSQL *conn, char username[20], char password[20], int age, char mai
 
 }
 
+/**
+ * deletes a user from the game
+ * @param conn MySQL connection
+ * @param username user's name
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int deleteUser(struct MYSQL *conn, char username[20]){
     char consult1[120] = {};
     char consult2[120] = {};
@@ -129,7 +125,7 @@ int deleteUser(struct MYSQL *conn, char username[20]){
     return 0;
 }
 
-/***
+/**
  * get's the email of a user from the database
  * @param conn MySQL connection
  * @param username username of the user
@@ -154,7 +150,7 @@ int getEmail(MYSQL *conn, char username[20], char mailOutput[20]) {
     return 0;
 }
 
-/***
+/**
  * changes the value of spam to a new one
  * @param conn MySQL connection
  * @param username username of the user
@@ -222,7 +218,6 @@ int getAge(MYSQL *conn, char username[20], int *ageOutput) {
     *ageOutput = (int) strtol(Age[0], (char **) NULL, 10);
     return 0;
 }
-
 
 //GAME SQL COMMANDS
 /**
@@ -294,6 +289,7 @@ int joinGame(MYSQL* conn, char username[20], int game){
     }
     return 0;
 }
+
 /**
  * starts a game saving it's players
  * @param conn MySQL connection
@@ -468,6 +464,7 @@ int finishedGames(MYSQL* conn, char games[512]){
     }
     return 0;
 }
+
 /**
  * gives a string with all the finisihed games, it's players and their scores
  * following the next formula id-player1*player2*-score,id-player2*player3*player4*-score,...
@@ -514,7 +511,14 @@ int playersPlayedWith(MYSQL* conn, char *players,char * name){
     return 0;
 }
 
-
+/**
+ * gives a set of games within two dates
+ * @param conn MySQL connection
+ * @param games char array where the games are dropped
+ * @param sDay start day
+ * @param fDay end day
+ * @return -1 if any error happens, 0 if there are no errors
+ */
 int gamesWithinDates(MYSQL* conn, char games[512],char * sDay, char * fDay){
     char consult[512] = {};
     MYSQL_RES *result;

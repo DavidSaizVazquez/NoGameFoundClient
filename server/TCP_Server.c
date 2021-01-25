@@ -10,7 +10,7 @@ extern int i;
 
 
 
-/***
+/**
  * Connection handler is the function executed in a thread to regulate the server access of a given channel
  * @param arg: position in the userList global object.
  * @return void
@@ -183,6 +183,7 @@ void *connection_handler(void *arg)
                         printf("Sending: %s to %s\n", broad, players.list[k].userName);
                         write(players.list[k].socket, broad, strlen(broad));
                     }
+                    strcpy(broad,"");
                     catUsers(&players,broad,"*");
                     startGame(conn,broad,gameNumber);
                     pthread_mutex_unlock(&mutex);
@@ -271,12 +272,6 @@ void *connection_handler(void *arg)
                     pthread_mutex_unlock(&mutex);
                     break;
 
-
-
-
-
-
-
                 case 20: //received player's last position, state,...
                     //mgs format: 20/pos_x,pos_y,state,looking dir(-1,1,0)~
                     p=strtok(NULL,"~");
@@ -284,7 +279,7 @@ void *connection_handler(void *arg)
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
-                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
                             write(players.list[k].socket, broad, strlen(broad));
                         }
 
@@ -298,7 +293,7 @@ void *connection_handler(void *arg)
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
-                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
                             write(players.list[k].socket, broad, strlen(broad));
                         }
                     }
@@ -309,7 +304,7 @@ void *connection_handler(void *arg)
                     for(int k=0; k < players.num; k++){
                         if(players.list[k].socket != sock_conn)
                         {
-                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            //printf("Sending: %s to %s\n", broad, players.list[k].userName);
                             write(players.list[k].socket, broad, strlen(broad));
                         }
                     }
@@ -356,6 +351,19 @@ void *connection_handler(void *arg)
 
                     }
                     pthread_mutex_unlock(&mutex);
+                    sprintf(answer, "-1/%d~", code);
+                    break;
+
+                case 26:
+                    sprintf(broad, "26/~");
+                    for(int k=0; k < players.num; k++){
+                        if(players.list[k].socket != sock_conn)
+                        {
+                            printf("Sending: %s to %s\n", broad, players.list[k].userName);
+                            write(players.list[k].socket, broad, strlen(broad));
+                        }
+
+                    }
                     sprintf(answer, "-1/%d~", code);
                     break;
 
@@ -483,7 +491,8 @@ int sendInvitation(char user[20],char sendingUser[20] ,int game) {
     }
     return 0;
 }
-/***
+
+/**
  * sends to the user all possible games to play
  * @return 0, error handling not implemented in this function
  */
@@ -500,7 +509,8 @@ int sendAllStartingGames(){
     }
     return 0;
 }
-/***
+
+/**
  * searches for a user and removes it from the list
  * @param list list to remove it from
  * @param pos postion of the removing item
@@ -513,7 +523,8 @@ int removeUser(UserList* list, int pos){
     list->num= list->num - 1;
     return 0;
 }
-/***
+
+/**
  * Starts the TCP Server
  * @param serv_adr address of the server
  * @param sock_listen socket where the connection is created
