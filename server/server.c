@@ -17,9 +17,9 @@ int main()
     //config variables
     int PORT=50060;
     //mysql
-    char* host="127.0.0.1";
+    char* host="147.83.117.53";
     char* user="root";
-    char* passw="admin";
+    char* passw="mysql";
     char* db="GameDB";
 
 
