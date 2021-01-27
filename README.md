@@ -29,5 +29,18 @@
 * Revised by Pau
 * Communicated by Dave
 
+## Final Version
+* Uploaded by Pau
+* Revised by David
+* Communicated by Tania
+
+
 ### Note
 We have uploaded the source files of the client to better revise the code and commnents. It can be imported to unity.
+
+### Build and execution
+There are two build files one for windows and the other for linux at the build directory.
+
+##Instructions to change host
+The build is made to work with shiva at port 50060.
+To use local ip or change the shiva port it must be done by modifying the script ServerLogic.cs and rebuilding.
