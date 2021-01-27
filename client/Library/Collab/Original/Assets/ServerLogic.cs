@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace NoGameFoundClient
 {
+    /**
+     *Singleton class that has the instance to the socket connection to the server.
+     */
     class ServerConnection
     {
         Socket server;
@@ -14,14 +17,16 @@ namespace NoGameFoundClient
         bool connected = false;
         static ServerConnection connection = null;
 
-
+        //Private constructor that initializes server connection
         private ServerConnection()
         {
-            this.ip = IPAddress.Parse("147.83.117.22");
+            //192.168.1.174
+            this.ip = IPAddress.Parse("127.0.0.1");
             this.port = new IPEndPoint(this.ip, 50060);
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
+        //returns server connection
         public static ServerConnection getInstance()
         {
           
@@ -33,6 +38,7 @@ namespace NoGameFoundClient
         }
 
 
+        //conects to server
         public int ConnectToServer()
         {
             Debug.Log("Connecting to server");
@@ -52,12 +58,14 @@ namespace NoGameFoundClient
             }
         }
 
+        //sends message to server
         public void SendMessage(String message)
         {
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(message);
             server.Send(msg);
         }
 
+        //listens for message from server
         public String ListenForMessage()
         {
           
@@ -67,6 +75,8 @@ namespace NoGameFoundClient
                 return msg;
            
         }
+        
+        //closes connection with server
         public void DisconnectFromServer()
         {
             string mensaje = "0/";
@@ -77,11 +87,14 @@ namespace NoGameFoundClient
             server.Shutdown(SocketShutdown.Both);
             server.Close();
         }
-
+        
+        //getter for bool connected
         public bool isConnected()
         {
             return connected;
         }
+        
+        //setter for bool connected
         public void setConnected(bool connected)
         {
             this.connected = connected;

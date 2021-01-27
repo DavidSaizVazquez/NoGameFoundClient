@@ -20,13 +20,19 @@ public class MessageParser : MonoBehaviour
     private MainMenuLogic mainMenuLogic;
     private GameCreationLogic gameCreationLogic;
     private InvitationLogic invitationLogic;
-
+    private JoinAGameLogic joinAGameLogic;
+    private ScoreBoardLogic scoreBoardLogic;
 
 
 
     bool invitationError = false;
 
-    // Start is called before the first frame update
+   
+    //Start is called before the first frame update
+    //It gets all the unity objects needed on this script, makes the infoLog invisible
+    //Get an instance of the server connection
+    //set the button events
+    //Executes the function to connect to the server for the first time
     void Start()
     {
 
@@ -47,9 +53,16 @@ public class MessageParser : MonoBehaviour
         gameCreationLogic = gameCreationWindow.GetComponent<GameCreationLogic>();
         GameObject invitationWindow = GameObject.Find("InvitationWindow");
         invitationLogic= invitationWindow.GetComponent<InvitationLogic>();
+        GameObject joinAGameWindow = GameObject.Find("JoinAGameWindow");
+        joinAGameLogic= joinAGameWindow.GetComponent<JoinAGameLogic>();
+        GameObject ScoreboardWindows = GameObject.Find("ScoreboardWindow");
+        scoreBoardLogic = ScoreboardWindows.GetComponent<ScoreBoardLogic>();
         connectToServer();
     }
 
+    //Asynchronous function that runs until we join a game.
+    //It listens and parses all the messages sent by the server.
+    //Sometimes messages come concatenated so we split them by ~
     async private void listenForServer()
     {
         bool run = true;
@@ -67,11 +80,11 @@ public class MessageParser : MonoBehaviour
                Debug.Log(serverResponse);
                 switch (prefix)
                 {
-                    case 0:
-                        break;
+                    //login accepted / denied
                     case 1:
                         if (commands[i] == "1/0")
                         {
+                            globalData.userName = loginLogic.username.text;
                             if (loginLogic.credentialsError)
                             {
                                 loginLogic.errorAnimator.SetBool("open", false);
@@ -87,6 +100,8 @@ public class MessageParser : MonoBehaviour
                             loginLogic.error.text = "Incorrect user or password";
                         }
                         break;
+                   
+                    //register
                     case 2:
                         if (commands[i].Equals("2/0"))
                         {
@@ -105,12 +120,18 @@ public class MessageParser : MonoBehaviour
                             registerLogin.userError = true;
                         }
                         break;
+                    
+                    //gets the age
                     case 3:
                         informationLogic.AgeText.text = commands[i].Replace("3/", "");
                         break;
+                    
+                    //gets the email
                     case 4:
                         informationLogic.EmailText.text = commands[i].Replace("4/", "");
                         break;
+                    
+                    //confirmation that spam has been changed
                     case 5:
                         if (commands[i] == "5/0")
                         {
@@ -126,16 +147,24 @@ public class MessageParser : MonoBehaviour
 
                         }
                         break;
+                    
+                    //spam getter
                     case 6:
                         informationLogic.spam.isOn = commands[i].Equals("6/1");
                         break;
+                    
+                    //list of connected users, calls the functions to update the displayed users
                     case 7:
                         informationLogic.connectedUsersNotificationListen(commands[i]);
                         gameCreationLogic.connectedUsersNotificationListen(commands[i]);
                         break;
+                    
+                    //gets the number of game that the user just created
                     case 8:
                         gameCreationLogic.gameNumber = int.Parse(commands[i].Split('/')[1]);
                         break;
+                    
+                    //confirmation that an invitation has been sent 
                     case 9:
                         if(commands[i].Equals("9/0"))
                         {
@@ -155,6 +184,8 @@ public class MessageParser : MonoBehaviour
                         }
                         
                         break;
+                    
+                    //reciving an invitation, popping up the dialog with the information updated. Set the game number to the class
                     case 10:
                         
                         string user = commands[i].Split('/')[1].Split(',')[0];
@@ -168,11 +199,14 @@ public class MessageParser : MonoBehaviour
                         invitationLogic.animator.SetBool("open", !invitationLogic.animator.GetBool("open"));
 						
                         break;
+                    
+                    //message containing all the users of a game. Updates the displayed lists and the gameUserList.
                     case 11:
                         gameCreationLogic.gamePlayersNotificationListen(commands[i]);
                         globalData.gameUserList = commands[i].Replace("11/", "").Split(',');
                         break;
                     
+                    //message to start a game. Depending on the parameter we load a level or another
                     case 12:
                         if (invitationLogic.gameNumber != -1)
                         {
@@ -193,7 +227,46 @@ public class MessageParser : MonoBehaviour
                          
                         }
                         break;
+                    //receives list all all started games
+                    case 13:
+                        joinAGameLogic.gamesNotificationUpdate(commands[i]);
+                        break;
+                    
+                    //confirmation of joining a game, change the join game UI to create game UI
+                    case 14:
+                        if (commands[i].Equals("14/0"))
+                        {
+                            gameCreationLogic.gameCreationCanvas.enabled = true;
+                            joinAGameLogic.mainCanvas.enabled = false;
+                        }
+                        else
+                        {
+                            Debug.Log("Error entering the game");
+                        }
+                        break;
+                    
+                    //confirmation of exiting a game
+                    case 15:
+                        if (commands[i].Equals("15/0"))
+                        {
+                            infoLogAnimator.SetBool("open", true);
+                            infoLogText.text = "Exited game!";
+                        }
+                        else
+                        {
+                            loginLogic.errorAnimator.SetBool("open", true);
+
+                            Debug.Log("Game exit Error");
+                            loginLogic.error.text = "Game exit error Error";
+                        }
+                        
+                        break;
+                    case 16:
+                        scoreBoardLogic.scoreBoardNotificationListen(commands[i]);
+                        break;
                 }
+                
+                
 
 
 
@@ -202,12 +275,14 @@ public class MessageParser : MonoBehaviour
         }
     }
 
+    //Closes the info log window after 5 seconds
     private async Task closeInfoLog()
     {
         await Task.Delay(5000);
         infoLogAnimator.SetBool("open", false);
     }
 
+    //Connects to the server only if its is not connected yet. Notifies an error if not able to.
     async private void connectToServer()
     {
         serverConnection = ServerConnection.getInstance();
@@ -241,13 +316,15 @@ public class MessageParser : MonoBehaviour
 
         }
     }
+    
+    //Method executed when the application is quited. Sending a disconnection code to the server.
     void OnApplicationQuit()
     {
         Debug.Log("Application ending after " + Time.time + " seconds");
         serverConnection.SendMessage("0/");
     }
 
-    //executed when window is closed
+    //executed the scene is destroyed, for debugging purposes.
     void OnDestroy()
     {
         Debug.Log("Destroyed...");

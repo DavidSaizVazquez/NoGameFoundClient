@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/LoginScene/LoginGAME.unity
+- path: Assets/gameScene/GameSceneMatlab.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NoGameFoundClient;
 using UnityEngine;
 
 public class Boss_Run : StateMachineBehaviour
@@ -11,6 +12,8 @@ public class Boss_Run : StateMachineBehaviour
     public float bulletRate;
     public float countMax;
     private float counter=0;
+
+    private NoGameFoundClient.ServerConnection serverConnection = ServerConnection.getInstance();
 
 
     float t=0;
@@ -36,10 +39,13 @@ public class Boss_Run : StateMachineBehaviour
             {
                 animator.SetBool("shootBullet",true);
                 counter+=Time.deltaTime;
+                
             }
             else
             {
                 animator.SetBool("shootTongue",true);
+                string message = "23/0/1~";
+                serverConnection.SendMessage(message);
                 counter = 0;
             }
         }

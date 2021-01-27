@@ -1,6 +1,7 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - BossAbility
     - BossHealth
     - Boss_Run
     - Boss_Run_ml
@@ -14,18 +15,32 @@ ScriptsOnlyBuild:
     - HealthHelp
     - InvitationLogic
     - JoinAGameLogic
+    - LavaLogic
     - LoginUI.GameCreationLogic
     - LoginUI.InformationLogic
     - LoginUI.LoginLogic
     - LoginUI.MainMenuLogic
+    - LoginUI.PersonalBoardLogic
     - LoginUI.RegisterLogin
+    - LoginUI.ScoreBoardLogic
     - MessageParser
+    - PauseMenu
+    - SpecialAbility
     - UpdateState
+    - addGradient
+    - allDead
+    - button_click
     - character_Collisions
+    - colorchange
+    - loadBoss_or_NPCboss
     - npc_online
     - playerMovement
     - pointAndShoot
+    - quit
+    - sendBossPosition
     - sendPosition
+    - set_npc_boss_position
+    - teamworkPoints
     Unity.2D.Animation.Editor.dll:
     - UnityEditor.U2D.Animation.BoneGizmo
     Unity.2D.Tilemap.Editor.dll:
@@ -40,8 +55,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -101,37 +118,43 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11464}
     - Class: 114
-      Script: {instanceID: 11564}
+      Script: {instanceID: 11566}
     - Class: 114
-      Script: {instanceID: 11572}
+      Script: {instanceID: 11574}
     - Class: 114
-      Script: {instanceID: 11644}
+      Script: {instanceID: 11646}
     - Class: 114
-      Script: {instanceID: 11722}
+      Script: {instanceID: 11724}
     - Class: 114
-      Script: {instanceID: 11798}
+      Script: {instanceID: 11726}
     - Class: 114
-      Script: {instanceID: 11804}
+      Script: {instanceID: 11802}
     - Class: 114
-      Script: {instanceID: 12122}
+      Script: {instanceID: 11808}
     - Class: 114
-      Script: {instanceID: 12294}
+      Script: {instanceID: 12128}
     - Class: 114
-      Script: {instanceID: 12580}
+      Script: {instanceID: 12304}
     - Class: 114
-      Script: {instanceID: 12654}
+      Script: {instanceID: 12594}
     - Class: 114
-      Script: {instanceID: 12772}
+      Script: {instanceID: 12672}
     - Class: 114
-      Script: {instanceID: 13166}
+      Script: {instanceID: 12792}
     - Class: 114
-      Script: {instanceID: 13314}
+      Script: {instanceID: 13190}
     - Class: 114
-      Script: {instanceID: 13610}
+      Script: {instanceID: 13338}
     - Class: 114
-      Script: {instanceID: 13794}
+      Script: {instanceID: 13620}
     - Class: 114
-      Script: {instanceID: 14412}
+      Script: {instanceID: 13638}
+    - Class: 114
+      Script: {instanceID: 13822}
+    - Class: 114
+      Script: {instanceID: 13900}
+    - Class: 114
+      Script: {instanceID: 14444}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -173,6 +196,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 62
       Script: {instanceID: 0}
+    - Class: 70
+      Script: {instanceID: 0}
     - Class: 74
       Script: {instanceID: 0}
     - Class: 81
@@ -186,42 +211,80 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11248}
     - Class: 114
+      Script: {instanceID: 11250}
+    - Class: 114
+      Script: {instanceID: 11252}
+    - Class: 114
       Script: {instanceID: 11278}
     - Class: 114
-      Script: {instanceID: 12294}
+      Script: {instanceID: 11476}
     - Class: 114
-      Script: {instanceID: 12338}
+      Script: {instanceID: 11820}
     - Class: 114
-      Script: {instanceID: 12624}
+      Script: {instanceID: 11824}
     - Class: 114
-      Script: {instanceID: 12666}
+      Script: {instanceID: 12180}
     - Class: 114
-      Script: {instanceID: 12932}
+      Script: {instanceID: 12280}
     - Class: 114
-      Script: {instanceID: 13006}
+      Script: {instanceID: 12304}
     - Class: 114
-      Script: {instanceID: 13026}
+      Script: {instanceID: 12348}
     - Class: 114
-      Script: {instanceID: 13082}
+      Script: {instanceID: 12430}
     - Class: 114
-      Script: {instanceID: 13108}
+      Script: {instanceID: 12498}
     - Class: 114
-      Script: {instanceID: 13488}
+      Script: {instanceID: 12604}
     - Class: 114
-      Script: {instanceID: 13668}
+      Script: {instanceID: 12612}
     - Class: 114
-      Script: {instanceID: 13794}
+      Script: {instanceID: 12640}
     - Class: 114
-      Script: {instanceID: 14134}
+      Script: {instanceID: 12684}
     - Class: 114
-      Script: {instanceID: 14194}
+      Script: {instanceID: 12780}
     - Class: 114
-      Script: {instanceID: 14412}
+      Script: {instanceID: 12822}
+    - Class: 114
+      Script: {instanceID: 12828}
+    - Class: 114
+      Script: {instanceID: 12956}
+    - Class: 114
+      Script: {instanceID: 13030}
+    - Class: 114
+      Script: {instanceID: 13050}
+    - Class: 114
+      Script: {instanceID: 13106}
+    - Class: 114
+      Script: {instanceID: 13132}
+    - Class: 114
+      Script: {instanceID: 13344}
+    - Class: 114
+      Script: {instanceID: 13514}
+    - Class: 114
+      Script: {instanceID: 13696}
+    - Class: 114
+      Script: {instanceID: 13822}
+    - Class: 114
+      Script: {instanceID: 14034}
+    - Class: 114
+      Script: {instanceID: 14166}
+    - Class: 114
+      Script: {instanceID: 14226}
+    - Class: 114
+      Script: {instanceID: 14444}
     - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 198
+      Script: {instanceID: 0}
+    - Class: 199
       Script: {instanceID: 0}
     - Class: 212
       Script: {instanceID: 0}
@@ -258,6 +321,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 62
       Script: {instanceID: 0}
+    - Class: 70
+      Script: {instanceID: 0}
     - Class: 74
       Script: {instanceID: 0}
     - Class: 81
@@ -271,46 +336,78 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11248}
     - Class: 114
+      Script: {instanceID: 11250}
+    - Class: 114
+      Script: {instanceID: 11252}
+    - Class: 114
       Script: {instanceID: 11278}
     - Class: 114
-      Script: {instanceID: 11816}
+      Script: {instanceID: 11476}
     - Class: 114
-      Script: {instanceID: 12294}
+      Script: {instanceID: 11820}
     - Class: 114
-      Script: {instanceID: 12338}
+      Script: {instanceID: 12180}
     - Class: 114
-      Script: {instanceID: 12590}
+      Script: {instanceID: 12280}
     - Class: 114
-      Script: {instanceID: 12624}
+      Script: {instanceID: 12304}
     - Class: 114
-      Script: {instanceID: 12666}
+      Script: {instanceID: 12348}
+    - Class: 114
+      Script: {instanceID: 12430}
+    - Class: 114
+      Script: {instanceID: 12498}
+    - Class: 114
+      Script: {instanceID: 12604}
+    - Class: 114
+      Script: {instanceID: 12612}
+    - Class: 114
+      Script: {instanceID: 12640}
+    - Class: 114
+      Script: {instanceID: 12684}
     - Class: 114
       Script: {instanceID: 12780}
     - Class: 114
-      Script: {instanceID: 13006}
+      Script: {instanceID: 12800}
     - Class: 114
-      Script: {instanceID: 13026}
+      Script: {instanceID: 12822}
     - Class: 114
-      Script: {instanceID: 13082}
+      Script: {instanceID: 12828}
     - Class: 114
-      Script: {instanceID: 13108}
+      Script: {instanceID: 13030}
     - Class: 114
-      Script: {instanceID: 13284}
+      Script: {instanceID: 13050}
     - Class: 114
-      Script: {instanceID: 13488}
+      Script: {instanceID: 13106}
     - Class: 114
-      Script: {instanceID: 13620}
+      Script: {instanceID: 13132}
     - Class: 114
-      Script: {instanceID: 13794}
+      Script: {instanceID: 13308}
     - Class: 114
-      Script: {instanceID: 14194}
+      Script: {instanceID: 13344}
     - Class: 114
-      Script: {instanceID: 14412}
+      Script: {instanceID: 13514}
+    - Class: 114
+      Script: {instanceID: 13648}
+    - Class: 114
+      Script: {instanceID: 13822}
+    - Class: 114
+      Script: {instanceID: 14034}
+    - Class: 114
+      Script: {instanceID: 14226}
+    - Class: 114
+      Script: {instanceID: 14444}
     - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 198
+      Script: {instanceID: 0}
+    - Class: 199
       Script: {instanceID: 0}
     - Class: 212
       Script: {instanceID: 0}
@@ -401,6 +498,12 @@ ScriptsOnlyBuild:
     className: InvitationLogic
   - hash:
       serializedVersion: 2
+      Hash: 90f094512f3732830975fc48c1ac7041
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: set_npc_boss_position
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -443,7 +546,7 @@ ScriptsOnlyBuild:
     className: TestResultRendererCallback
   - hash:
       serializedVersion: 2
-      Hash: 1166c9d551200ad483ef927a0f7ec259
+      Hash: af064a092f781b6083e6e82d7650a2ab
     assemblyName: Assembly-CSharp.dll
     namespaceName: LoginUI
     className: MainMenuLogic
@@ -465,6 +568,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: GridLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: ef1d182645a864ca620763b189e7057e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: LoginUI
+    className: PersonalBoardLogic
   - hash:
       serializedVersion: 2
       Hash: d43c5472eb9b9e1c296dc71e99b44b4f
@@ -497,10 +606,16 @@ ScriptsOnlyBuild:
     className: MessageParser
   - hash:
       serializedVersion: 2
-      Hash: 58168e4a7dede20559e1907cb7fe1e3b
+      Hash: 9b84052656b47dbe6869e97500c76106
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: npc_online
+  - hash:
+      serializedVersion: 2
+      Hash: 83e769eee07fc231384c812eedbb8224
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: LavaLogic
   - hash:
       serializedVersion: 2
       Hash: 0dbc3be398b4869a5c8d0d8481ee402c
@@ -569,10 +684,22 @@ ScriptsOnlyBuild:
     className: Mask
   - hash:
       serializedVersion: 2
+      Hash: 9ca897a992206b22385c3594ddaa7aeb
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SpecialAbility
+  - hash:
+      serializedVersion: 2
       Hash: caa533b001ae39b864ba8425019e2268
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Shadow
+  - hash:
+      serializedVersion: 2
+      Hash: 3184c148d2236acb094efd7533620a27
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: addGradient
   - hash:
       serializedVersion: 2
       Hash: cc4274b586df3c02688bac01b88bd16c
@@ -599,7 +726,7 @@ ScriptsOnlyBuild:
     className: SpriteShape
   - hash:
       serializedVersion: 2
-      Hash: 31f4026664b52fa9487ec2980d54038e
+      Hash: 07520cc31de5ecbe37b4539283090f2a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BossHealth
@@ -629,7 +756,19 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
-      Hash: 7dbeb7c7689f2138235d002b34432637
+      Hash: 1c615c28fbc15ebf71dd3835a5d68224
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: colorchange
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: loadBoss_or_NPCboss
+  - hash:
+      serializedVersion: 2
+      Hash: 4e06980ce70e2227f4869c7b1320aff1
     assemblyName: Assembly-CSharp.dll
     namespaceName: LoginUI
     className: InformationLogic
@@ -641,7 +780,13 @@ ScriptsOnlyBuild:
     className: UpdateState
   - hash:
       serializedVersion: 2
-      Hash: 89c78425d81de686b6aebaeb2cb52394
+      Hash: 618a804b6c97b4b8da327e503deaa905
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: teamworkPoints
+  - hash:
+      serializedVersion: 2
+      Hash: d6dbff5b2f65347138bda5e8422d1388
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Game_MessageParser
@@ -671,7 +816,13 @@ ScriptsOnlyBuild:
     className: SpriteSkinEntity
   - hash:
       serializedVersion: 2
-      Hash: feb34948c40955c1197c8d2c85244d78
+      Hash: 5b6021814926e9b03d552685bdc12cc6
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PauseMenu
+  - hash:
+      serializedVersion: 2
+      Hash: 4d3f2593cefe6732470a65a98ca323b2
     assemblyName: Assembly-CSharp.dll
     namespaceName: LoginUI
     className: LoginLogic
@@ -681,6 +832,18 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Boss_Tongue
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: quit
+  - hash:
+      serializedVersion: 2
+      Hash: 816fc6994036ac05e52f094f39cafcbc
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BossAbility
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -725,7 +888,7 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: 8aa0162b6f55000f92522901f74a1ccf
+      Hash: 71244866b8e3333514a2c219ccc47d5e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: pointAndShoot
@@ -743,7 +906,7 @@ ScriptsOnlyBuild:
     className: VerticalLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: 90f094512f3732830975fc48c1ac7041
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Boss_Shoot
@@ -759,6 +922,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: InputField
+  - hash:
+      serializedVersion: 2
+      Hash: 7a6059296aa556881b92661dc4c9affa
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: allDead
   - hash:
       serializedVersion: 2
       Hash: c9a8b80298a116835b51ba1cf9284367
@@ -815,6 +984,12 @@ ScriptsOnlyBuild:
     className: CharacterController2D
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: button_click
+  - hash:
+      serializedVersion: 2
       Hash: b26ac13aaf7f7324da7f7c809b72e8fb
     assemblyName: Assembly-CSharp.dll
     namespaceName: LoginUI
@@ -855,6 +1030,18 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools
     className: BeforeAfterTestCommandState
+  - hash:
+      serializedVersion: 2
+      Hash: 9d0a23e00bafa8bfa3e5f79c9aae2dce
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: LoginUI
+    className: ScoreBoardLogic
+  - hash:
+      serializedVersion: 2
+      Hash: d16780efc4a04550b30b3e17b6da5f28
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: sendBossPosition
   - hash:
       serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
@@ -968,4 +1155,4 @@ ScriptsOnlyBuild:
   - Assets/LoginScene/LoginGAME.unity
   - Assets/gameScene/GameScenePython.unity
   - Assets/gameScene/GameSceneMatlab.unity
-  playerPath: /home/david/Documents/SO/game/Game/build/build.x86_64
+  playerPath: /home/david/Documents/UNI/SO/game/Game/build/build.x86_64

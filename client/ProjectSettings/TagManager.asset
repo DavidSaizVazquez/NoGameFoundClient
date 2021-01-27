@@ -9,6 +9,8 @@ TagManager:
   - boss
   - bossBullet
   - Floor
+  - npc_boss
+  - shieldBullet
   layers:
   - Default
   - TransparentFX
@@ -25,9 +27,9 @@ TagManager:
   - boss
   - bossbullet
   - meteor
+  - particles
+  - shieldBullet
   - background
-  - 
-  - 
   - 
   - 
   - 
